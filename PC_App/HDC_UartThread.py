@@ -13,6 +13,8 @@ class UARTThread(QtCore.QThread):
     data_rec = QtCore.pyqtSignal(object)
     
     ## The Constructor
+    # @param com_nbr number of COM port (e.g. "COM10")
+    # @param baudrate specifies the baudarte of COM port
     def __init__(self, com_nbr, baudrate):
         QtCore.QThread.__init__(self)
         self.ser = serial.Serial(com_nbr, baudrate, timeout = 1000, parity = serial.PARITY_NONE, rtscts  =0)

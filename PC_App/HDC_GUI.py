@@ -1,11 +1,16 @@
-import sys
-import os
-import serial
-from PyQt5 import QtWidgets, uic
+##
+# @author: Krzysztof Półchłopek
+# @date: 22.03.2022
+#
 
+from PyQt5 import QtWidgets, QtCore, uic
+
+from HDC_UartThread import UARTThread
+
+## Class for gui display and funcions
 class MainGUI(QtWidgets.QMainWindow):
 
     def __init__(self):
-        super(MainGUI, self).__init__() # Call the inherited classes __init__ method
+        super(MainGUI, self).__init__()
         uic.loadUi('mainWindow.ui', self) # Load the .ui file
         self.show() # Show the GUI
