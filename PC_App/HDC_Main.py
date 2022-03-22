@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QApplication
 import sys
 from HDC_GUI import MainGUI
+
+
 def main():
     app = QApplication(sys.argv)
     window = MainGUI()
