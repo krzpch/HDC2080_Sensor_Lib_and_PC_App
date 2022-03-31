@@ -33,7 +33,8 @@ class UARTThread(QtCore.QThread):
             ret = str(self.ser.readline())
             self.data_rec.emit(ret)
 
-    ## Method for sending data through COM port   
+    ## Method for sending data through COM port
+    # @param msg strong message to send   
     def send(self, msg):
         if self.started == True:
             self.ser.write(str.encode(msg))
