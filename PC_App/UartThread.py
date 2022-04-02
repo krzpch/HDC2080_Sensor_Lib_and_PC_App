@@ -3,6 +3,7 @@
 # @date: 22.03.2022
 #
 
+from re import ASCII
 import serial
 from PyQt5 import QtCore
 
@@ -30,14 +31,15 @@ class UARTThread(QtCore.QThread):
     ## Method for receiving data form COM port
     def run(self):
         while self.started:
-            ret = str(self.ser.readline())
-            self.data_rec.emit(ret)
+            if self.ser.in_waiting > 0:
+                ret = str(self.ser.read_all())[2:-1]
+                self.data_rec.emit(ret)
 
     ## Method for sending data through COM port
     # @param msg strong message to send   
     def send(self, msg):
         if self.started == True:
-            self.ser.write(str.encode(msg))
+            self.ser.write(str.encode(msg, encoding="ASCII"))
             self.ser.flush()
 
     ## Method for closing serial port and terminating thread
