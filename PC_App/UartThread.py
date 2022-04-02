@@ -7,9 +7,6 @@ from re import ASCII
 import serial
 from PyQt5 import QtCore
 
-## Constans for selecting working mode for receiver
-NORMAL_MODE, COMMAND_MODE = 0, 1
-
 ## Class for comunication through UART
 class UARTThread(QtCore.QThread):
     
