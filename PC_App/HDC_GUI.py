@@ -8,11 +8,20 @@ import serial
 import sys
 import glob
 
-from HDC_UartThread import UARTThread
+from UartThread import UARTThread
 
 ## Class for gui display and funcions
+#
+#   This class supports gui display and configuration of functions which are execuded
+#   when user performs specific actions in gui
 class MainGUI(QtWidgets.QMainWindow):
 
+    ## Class variable storing port status
+    portOpened = False
+
+    ## Class variable storing UART 
+
+    ## The consrtuctor
     def __init__(self):
         super(MainGUI, self).__init__()
         uic.loadUi('mainWindow.ui', self) # Load the .ui file
@@ -24,7 +33,8 @@ class MainGUI(QtWidgets.QMainWindow):
 
         #attach functions to buttons
         self.portRefreshButton.clicked.connect(self.refresh_portSelectBox_onClick)
-
+        self.connectButton.clicked.connect(self.connect_onClick)
+        self.sendButton.clicked.connect(self.transmitData_onClick)
 
     ## Funcion to update temperature display
     def updateTempLCD(self, temp):
@@ -61,3 +71,39 @@ class MainGUI(QtWidgets.QMainWindow):
         self.portSelectBox.clear()
         for port in self.list_ports():
             self.portSelectBox.addItem(port, port)
+
+    ## Function for opening/closing the serial port
+    def connect_onClick(self):
+        if self.portOpened == False:
+            self.UARTPort = UARTThread(str(self.portSelectBox.currentData()), int(self.baudrateLineEdit.text()))
+            self.portOpened = self.UARTPort.is_opened()
+            if self.portOpened == False:
+                print("PORT ERROR")
+                return
+            else:
+                self.UARTPort.data_rec.connect(self.show_recv_data)
+                self.UARTPort.start()
+                self.connectButton.setText("Disconnect")
+        else:
+            self.UARTPort.closePort()
+            self.portOpened = False
+            self.connectButton.setText("Connect")
+
+
+    ## Function for displaying received data through serial port
+    def show_recv_data(self, data):
+        input = "uC -> PC:" + data
+        self.globalResponse.append(input)
+
+
+    ## Function for displaying transmitted data through serial port
+    def show_send_data(self, data):
+        input = "PC -> uC:" + data
+        self.globalResponse.append(input)
+
+    ## Function for transmitting data through serial port
+    def transmitData_onClick(self):
+        if self.portOpened:
+            self.UARTPort.send(self.send_lineEdit.text())
+            self.show_send_data(self.send_lineEdit.text())
+        pass
