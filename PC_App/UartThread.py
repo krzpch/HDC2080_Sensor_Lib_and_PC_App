@@ -18,7 +18,7 @@ class UARTThread(QtCore.QThread):
     def __init__(self, com_nbr, baudrate):
         QtCore.QThread.__init__(self)
         self.ser = serial.Serial(com_nbr, baudrate, timeout = 1000, parity = serial.PARITY_NONE, rtscts  =0)
-        if self.ser.is_open():
+        if self.ser.is_open:
             self.started = True
         else:
             self.started = False
