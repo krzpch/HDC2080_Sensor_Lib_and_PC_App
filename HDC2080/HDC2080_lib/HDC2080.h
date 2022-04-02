@@ -1,5 +1,14 @@
+/*
+ * HDC2080.h
+ *
+ *  Created on: Mar 22, 2022
+ *      Author: Michał Tomacha
+ */
+
 #ifndef _HDC2080_H_
 #define _HDC2080_H_
+
+#include "HDC2080_Config.h"
 
 #define TEMPERATURE_LOW_REG                 0x00
 #define TEMPERATURE_HIGH_REG                0x01
@@ -65,11 +74,45 @@
 #define MEASUREMENT_CONFIGURATION_TRES_0         0x40
 #define MEASUREMENT_CONFIGURATION_HRES_1         0x20
 #define MEASUREMENT_CONFIGURATION_HRES_0         0x10
-#define MEASUREMENT_CONFIGURATION_RES           0x08
 #define MEASUREMENT_CONFIGURATION_MEAS_CONF_1    0x04
 #define MEASUREMENT_CONFIGURATION_MEAS_CONF_0    0x02
-#define MEASUREMENT_CONFIGURATION_MEAS_TRIG     0x01
+#define MEASUREMENT_CONFIGURATION_MEAS_TRIG      0x01
 
+typedef enum HDC2080_Status {
+	HDC2080_OK = 0,
+	HDC2080_ERROR = 1,
+	HDC2080_DNR = 2 // Data Not Ready
+} HDC2080_Status;
 
+typedef enum HDC2080_Temperature_Resolution {
+	HDC2080_Temperature_Resolution_14_bit	 = 0,
+	HDC2080_Temperature_Resolution_11_bit	 = 1,
+	HDC2080_Temperature_Resolution_9_bit	 = 2
+} HDC2080_Temperature_Resolution;
 
-#endif
+typedef enum HDC2080_Humidity_Resolution {
+	HDC2080_Humidity_Resolution_14_bit	 = 0,
+	HDC2080_Humidity_Resolution_11_bit	 = 1,
+	HDC2080_Humidity_Resolution_9_bit	 = 2
+} HDC2080_Humidity_Resolution;
+
+typedef enum HDC2080_AMM_Rate { 	  // Auto measurement mode
+	HDC2080_AMM_Rate_1_Disabled	 = 0, // disabled (measurement must be initiated via I2C)
+	HDC2080_AMM_Rate_1_120Hz	 = 1, // 1/120 Hz
+	HDC2080_AMM_Rate_1_60Hz		 = 2, // 1/60 Hz
+	HDC2080_AMM_Rate_1_10Hz		 = 3, // 1/10 Hz
+	HDC2080_AMM_Rate_1_5Hz		 = 4, // 1/5 Hz
+	HDC2080_AMM_Rate_1Hz		 = 5, // 1 Hz
+	HDC2080_AMM_Rate_2Hz		 = 6, // 2 Hz
+	HDC2080_AMM_Rate_5Hz		 = 7  // 5 Hz
+} HDC2080_AMM_Rate;
+
+HDC2080_Status HDC2080_Set_Temperature_Resolution(HDC2080_Temperature_Resolution resolution);
+HDC2080_Status HDC2080_Set_Humidity_Resolution(HDC2080_Humidity_Resolution resolution);
+HDC2080_Status HDC2080_Set_AMM_Rate(HDC2080_AMM_Rate rate);
+HDC2080_Status HDC2080_Start_Conversion(void);
+HDC2080_Status HDC2080_Read_Temperature(float* temperature);
+HDC2080_Status HDC2080_Read_Humidity(float* humidity);
+HDC2080_Status HDC2080_Read_Temperature_Humidity(float* temperature, float* humidity);
+
+#endif /* _HDC2080_H_ */
