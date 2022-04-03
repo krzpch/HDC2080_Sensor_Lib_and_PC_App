@@ -264,6 +264,19 @@
        </rect>
       </property>
      </widget>
+     <widget class="QPushButton" name="TestButton">
+      <property name="geometry">
+       <rect>
+        <x>1004</x>
+        <y>10</y>
+        <width>141</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Test Init</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QTextEdit" name="globalResponse">

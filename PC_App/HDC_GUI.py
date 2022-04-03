@@ -8,7 +8,8 @@ import serial
 import sys
 import glob
 
-from UartThread import UARTThread
+from UartThread import *
+from HDC_Commands import HDC, HDC2080
 
 ## Class for gui display and funcions
 #
@@ -19,7 +20,11 @@ class MainGUI(QtWidgets.QMainWindow):
     ## Class variable storing port status
     portOpened = False
 
+    ## Class variable for accessing commands, stored configuration and data
+    hdc = HDC2080()
+
     ## Class variable storing UART 
+    UARTPort = None
 
     ## The consrtuctor
     def __init__(self):
@@ -35,18 +40,19 @@ class MainGUI(QtWidgets.QMainWindow):
         self.portRefreshButton.clicked.connect(self.refresh_portSelectBox_onClick)
         self.connectButton.clicked.connect(self.connect_onClick)
         self.sendButton.clicked.connect(self.transmitData_onClick)
+        self.TestButton.clicked.connect(self.transmitInit_onClick)
 
-    ## Funcion to update temperature display
+    ## Function to update temperature display
     def updateTempLCD(self, temp):
         self.temp_lcdNumber.display(temp)
 
 
-    ## Funcion to update humidity display
+    ## Function to update humidity display
     def updateHumLCD(self, hum):
         self.hum_lcdNumber.display(hum)
 
 
-    ## Funtion for listing all avaliable ports 
+    ## Function for listing all avaliable ports 
     def list_ports(self):
         if sys.platform.startswith('win'):
             ports = ['COM%s' % (i + 1) for i in range(256)]
@@ -75,7 +81,7 @@ class MainGUI(QtWidgets.QMainWindow):
     ## Function for opening/closing the serial port
     def connect_onClick(self):
         if self.portOpened == False:
-            self.UARTPort = UARTThread(str(self.portSelectBox.currentData()), int(self.baudrateLineEdit.text()))
+            self.UARTPort = UARTThread(com_nbr= str(self.portSelectBox.currentData()),baudrate= int(self.baudrateLineEdit.text()), op_mode= COMMAND_MODE)
             self.portOpened = self.UARTPort.is_opened()
             if self.portOpened == False:
                 print("PORT ERROR")
@@ -92,7 +98,7 @@ class MainGUI(QtWidgets.QMainWindow):
 
     ## Function for displaying received data through serial port
     def show_recv_data(self, data):
-        input = "uC -> PC:" + data
+        input = "uC -> PC:" + data[:-2]
         self.globalResponse.append(input)
 
 
@@ -101,9 +107,20 @@ class MainGUI(QtWidgets.QMainWindow):
         input = "PC -> uC:" + data
         self.globalResponse.append(input)
 
+    ## Function for sending and printing to GUI sent data
+    def transmit_and_show(self, data):
+        if self.portOpened:
+            self.UARTPort.send(data)
+            self.show_send_data(data[:-2])
+
     ## Function for transmitting data through serial port
     def transmitData_onClick(self):
         if self.portOpened:
-            self.UARTPort.send(self.send_lineEdit.text())
-            self.show_send_data(self.send_lineEdit.text())
-        pass
+            data = self.send_lineEdit.text() + '\n'
+            self.transmit_and_show(data)
+
+    ## Function for sending init message 
+    def transmitInit_onClick(self):
+        if self.portOpened:
+            self.transmit_and_show(self.hdc.init())
+
