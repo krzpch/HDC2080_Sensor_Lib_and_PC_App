@@ -63,7 +63,7 @@ HDC2080_Status HDC2080_Read_Temperature(float* temperature)
 
 	HDC2080_I2C_Read(INTERRUPT_DRDY_REG, &tmp_reg, 1); // read INTERRUPT_DRDY_REG register
 
-	if( (tmp_reg & INTERRUPT_DRDY_DRDY_STATUS) == INTERRUPT_DRDY_DRDY_STATUS) // check if data is ready
+	if((tmp_reg & INTERRUPT_DRDY_DRDY_STATUS) == INTERRUPT_DRDY_DRDY_STATUS) // check if data is ready
 	{
 		HDC2080_I2C_Read(TEMPERATURE_LOW_REG, temp_lh, 2); // read TEMPERATURE_LOW and TEMPERATURE_HIGH registers
 
@@ -88,7 +88,7 @@ HDC2080_Status HDC2080_Read_Humidity(float* humidity)
 
 	HDC2080_I2C_Read(INTERRUPT_DRDY_REG, &tmp_reg, 1); // read INTERRUPT_DRDY_REG register
 
-	if( (tmp_reg & INTERRUPT_DRDY_DRDY_STATUS) == INTERRUPT_DRDY_DRDY_STATUS) // check if data is ready
+	if((tmp_reg & INTERRUPT_DRDY_DRDY_STATUS) == INTERRUPT_DRDY_DRDY_STATUS) // check if data is ready
 	{
 		HDC2080_I2C_Read(HUMIDITY_LOW_REG, hum_lh, 2); // read HUMIDITY_LOW and HUMIDITY_HIGH registers
 
@@ -114,7 +114,7 @@ HDC2080_Status HDC2080_Read_Temperature_Humidity(float* temperature, float* humi
 
 	HDC2080_I2C_Read(INTERRUPT_DRDY_REG, &tmp_reg, 1); // read INTERRUPT_DRDY_REG register
 
-	if( (tmp_reg & INTERRUPT_DRDY_DRDY_STATUS) == INTERRUPT_DRDY_DRDY_STATUS) // check if data is ready
+	if((tmp_reg & INTERRUPT_DRDY_DRDY_STATUS) == INTERRUPT_DRDY_DRDY_STATUS) // check if data is ready
 	{
 		HDC2080_I2C_Read(TEMPERATURE_LOW_REG, temp_hum, 4); // read TEMPERATURE_LOW and TEMPERATURE_HIGH registers
 
@@ -135,3 +135,104 @@ HDC2080_Status HDC2080_Read_Temperature_Humidity(float* temperature, float* humi
 		return HDC2080_DNR;
 	}
 }
+
+HDC2080_Status HDC2080_Read_Max_Temperature(float* temperature)
+{
+	uint8_t temp = 0;
+
+	HDC2080_I2C_Read(TEMPERATURE_MAX_REG, temp, 1); // read TEMPERATURE_MAX_REG register
+
+	*temperature = ((float)temp/256)*165-40.5; // convert to degrees Celsius
+
+	return HDC2080_OK;
+}
+
+HDC2080_Status HDC2080_Read_Max_Humidity(float* humidity)
+{
+	uint8_t hum = 0;
+
+	HDC2080_I2C_Read(HUMIDITY_MAX_REG, hum, 1); // read HUMIDITY_MAX_REG register
+
+	*humidity = ((float)hum/256)*100; // convert to %RH
+
+	return HDC2080_OK;
+}
+
+HDC2080_Status HDC2080_Get_Temperature_Offset(float* temperature_offset)
+{
+	uint8_t i_offset = 0;
+	float f_offset = 0.0f;
+
+	HDC2080_I2C_Read(TEMP_OFFSET_ADJUST_REG, i_offset, 1); // read TEMP_OFFSET_ADJUST_REG register
+
+	for (uint8_t i = 0; i<8; i++)
+	{
+		i_offset = i_offset >> i;
+
+		if((i_offset & 1) == 1)
+		{
+			if(i != 7)
+			{
+				if( i < 4)
+				{
+					f_offset += (0.16 * i);
+				}
+				else
+				{
+					f_offset += (1.28 * (i - 4));
+				}
+			}
+			else
+			{
+				f_offset -= 20.62;
+			}
+		}
+	}
+
+	if( (offset & TEMP_OFFSET_ADJUST_0) == TEMP_OFFSET_ADJUST_0 )
+	{
+		f_offset += 0.16;
+	}
+	if( (offset & TEMP_OFFSET_ADJUST_1) == TEMP_OFFSET_ADJUST_1 )
+	{
+		f_offset += 0.32;
+	}
+	if( (offset & TEMP_OFFSET_ADJUST_2) == TEMP_OFFSET_ADJUST_2 )
+	{
+		f_offset += 0.64;
+	}
+	if( (offset & TEMP_OFFSET_ADJUST_3) == TEMP_OFFSET_ADJUST_3 )
+	{
+		f_offset += 1.28;
+	}
+	if( (offset & TEMP_OFFSET_ADJUST_4) == TEMP_OFFSET_ADJUST_4 )
+	{
+		f_offset += 2.58;
+	}
+	if( (offset & TEMP_OFFSET_ADJUST_5) == TEMP_OFFSET_ADJUST_5 )
+	{
+		f_offset += 5.16;
+	}
+	if( (offset & TEMP_OFFSET_ADJUST_6) == TEMP_OFFSET_ADJUST_6 )
+	{
+		f_offset += 10.32;
+	}
+	else if( (offset & TEMP_OFFSET_ADJUST_7) == TEMP_OFFSET_ADJUST_7 )
+	{
+		f_offset -= 20.62;
+	}
+
+	*temperature_offset = f_offset;
+
+	return HDC2080_OK;
+}
+
+HDC2080_Status HDC2080_Get_Humidity_Offset(float* humidity_offset)
+{
+	uint8_t offset = 0;
+
+	HDC2080_I2C_Read(HUM_OFFSET_ADJUST_REG, offset, 1); // read HUM_OFFSET_ADJUST_REG register
+
+	return HDC2080_OK;
+}
+

@@ -114,5 +114,9 @@ HDC2080_Status HDC2080_Start_Conversion(void);
 HDC2080_Status HDC2080_Read_Temperature(float* temperature);
 HDC2080_Status HDC2080_Read_Humidity(float* humidity);
 HDC2080_Status HDC2080_Read_Temperature_Humidity(float* temperature, float* humidity);
+HDC2080_Status HDC2080_Read_Max_Temperature(float* temperature);
+HDC2080_Status HDC2080_Read_Max_Humidity(float* humidity);
+HDC2080_Status HDC2080_Get_Temperature_Offset(float* temperature_offset);
+HDC2080_Status HDC2080_Get_Humidity_Offset(float* humidity_offset);
 
 #endif /* _HDC2080_H_ */
