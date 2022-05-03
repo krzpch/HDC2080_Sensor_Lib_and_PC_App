@@ -141,4 +141,3 @@ class MainGUI(QtWidgets.QMainWindow):
     def transmitGetHum_onClick(self):
         if self.portOpened:
             self.transmit_and_show(self.hdc.recv_hum())
-
