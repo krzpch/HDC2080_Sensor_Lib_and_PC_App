@@ -9,7 +9,7 @@ import sys
 import glob
 
 from UartThread import *
-from HDC_Commands import HDC, HDC2080
+from HDC_Commands import HDC2080
 
 ## Class for gui display and funcions
 #
@@ -41,6 +41,9 @@ class MainGUI(QtWidgets.QMainWindow):
         self.connectButton.clicked.connect(self.connect_onClick)
         self.sendButton.clicked.connect(self.transmitData_onClick)
         self.TestButton.clicked.connect(self.transmitInit_onClick)
+        self.TestButton_2.clicked.connect(self.transmitGetTemp_onClick)
+        self.TestButton_3.clicked.connect(self.transmitGetHum_onClick)
+        self.TestButton_4.clicked.connect(self.transmitDeinit_onClick)
 
     ## Function to update temperature display
     def updateTempLCD(self, temp):
@@ -98,20 +101,20 @@ class MainGUI(QtWidgets.QMainWindow):
 
     ## Function for displaying received data through serial port
     def show_recv_data(self, data):
-        input = "uC -> PC:" + data[:-2]
+        input = "uC -> PC: " + data[:-2]
         self.globalResponse.append(input)
 
 
     ## Function for displaying transmitted data through serial port
     def show_send_data(self, data):
-        input = "PC -> uC:" + data
+        input = "PC -> uC: " + data
         self.globalResponse.append(input)
 
     ## Function for sending and printing to GUI sent data
     def transmit_and_show(self, data):
         if self.portOpened:
             self.UARTPort.send(data)
-            self.show_send_data(data[:-2])
+            self.show_send_data(data[:-1])
 
     ## Function for transmitting data through serial port
     def transmitData_onClick(self):
@@ -119,8 +122,23 @@ class MainGUI(QtWidgets.QMainWindow):
             data = self.send_lineEdit.text() + '\n'
             self.transmit_and_show(data)
 
-    ## Function for sending init message 
+    ## Function for sending "Initialize" message 
     def transmitInit_onClick(self):
         if self.portOpened:
-            self.transmit_and_show(self.hdc.init())
+            self.transmit_and_show(self.hdc.init(self.tempOffset_lineEdit.text(),self.humOffset_lineEdit.text()))
+            
+    ## Function for sending "Initialize" message 
+    def transmitDeinit_onClick(self):
+        if self.portOpened:
+            self.transmit_and_show(self.hdc.deinit())
+            
+    ## Function for sending "Get Temperature" message 
+    def transmitGetTemp_onClick(self):
+        if self.portOpened:
+            self.transmit_and_show(self.hdc.recv_temp())
+            
+    ## Function for sending "Get Humidity" message 
+    def transmitGetHum_onClick(self):
+        if self.portOpened:
+            self.transmit_and_show(self.hdc.recv_hum())
 

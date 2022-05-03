@@ -21,6 +21,18 @@ class HDC2080():
     ## Method for initialization of sensor
     # 
     # This methods return command which user should send to initialize sensor
-    def init(self) -> str:
-        command = "hdc_init\n"
+    def init(self,tempOffset, humOffset) -> str:
+        command = "hdc_init " + tempOffset + " " + humOffset + "\n"
+        return command
+
+    def deinit(self) -> str:
+        command = "hdc_deinit\n"
+        return command
+
+    def recv_temp(self) -> str:
+        command = "hdc_getTemp\n"
+        return command
+
+    def recv_hum(self) -> str:
+        command = "hdc_getHum\n"
         return command
