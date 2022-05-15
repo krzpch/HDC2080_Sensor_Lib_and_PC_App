@@ -75,17 +75,6 @@ class MainGUI(QtWidgets.QMainWindow):
         self.humPen = pg.mkPen(color=(0, 0, 255))
         self.tempDataLine =  self.tempGraphWidget.plot(self.tempPlotX, self.tempPlotY, pen=self.tempPen, symbol='d')
         self.humDataLine =  self.humGraphWidget.plot(self.tempPlotX, self.tempPlotY, pen=self.humPen, symbol='d')
-        
-
-    ## Function to update temperature display
-    def updateTempLCD(self, temp):
-        self.temp_lcdNumber.display(temp)
-
-
-    ## Function to update humidity display
-    def updateHumLCD(self, hum):
-        self.hum_lcdNumber.display(hum)
-
 
     ## Function for listing all avaliable ports 
     def list_ports(self):
@@ -140,6 +129,7 @@ class MainGUI(QtWidgets.QMainWindow):
                 self.show_recv_data("Temperature " + input[1][:-2])
                 self.temp_lcdNumber.display(float(input[1][:-2]))
                 self.plotTemp(len(self.tempPlotX) + 1,float(input[1][:-2]))
+                
             case "HUM":
                 self.show_recv_data("Humidity " + input[1][:-2])
                 self.hum_lcdNumber.display(float(input[1][:-2]))
@@ -202,7 +192,15 @@ class MainGUI(QtWidgets.QMainWindow):
             self.transmit_and_show(self.hdc.recv_mesurements())
 
     ## ---------------------------------------------------------------------------------------------------- ##
-    ## Functions for ploting ##
+    ## Functions for displaying and  ploting meaurements##
+    
+    ## Function to update temperature display
+    def updateTempLCD(self, temp):
+        self.temp_lcdNumber.display(temp)
+
+    ## Function to update humidity display
+    def updateHumLCD(self, hum):
+        self.hum_lcdNumber.display(hum)
     
     ## Function for ploting temperature
     def plotTemp(self, time, temperature):
@@ -224,9 +222,8 @@ class MainGUI(QtWidgets.QMainWindow):
     ## Function for requesting register values
     def readRegs_onClick(self):
         self.register1_lineEdit.setText("0x11")
-        pass
     
      ## Function for sening new register values
     def writeRegs_onClick(self):
         self.register1_lineEdit.setText("0x22")
-        pass
+        
