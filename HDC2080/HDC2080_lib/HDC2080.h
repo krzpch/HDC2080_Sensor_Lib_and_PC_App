@@ -89,14 +89,11 @@ typedef enum HDC2080_Status_t {
 
 typedef HDC2080_Status_t (*HDC2080_I2C_Read_t)(uint16_t hdc2080_address, uint16_t hdc2080_reg, uint8_t *data, uint16_t data_size);
 typedef HDC2080_Status_t (*HDC2080_I2C_Write_t)(uint16_t hdc2080_address, uint16_t hdc2080_reg, uint8_t *data);
-//TODO: finish writing interrupt callback typedef
-typedef HDC2080_Status_t (*HDC2080_INT_Callback_t)(int placeholder);
 
 typedef struct HDC2080_t {
 	uint8_t address;
 	HDC2080_I2C_Read_t I2C_Read;
 	HDC2080_I2C_Write_t I2C_Write;
-	HDC2080_INT_Callback_t INT_Callback;
 } HDC2080_t;
 
 typedef enum HDC2080_Temperature_Resolution_t {
@@ -122,17 +119,133 @@ typedef enum HDC2080_AMM_Rate_t { 	  // Auto measurement mode
 	HDC2080_AMM_Rate_5Hz		 = 7  // 5 Hz
 } HDC2080_AMM_Rate_t;
 
+typedef struct HDC2080_Temperature_Offset_t {
+	uint8_t of_0_16;
+	uint8_t of_0_32;
+	uint8_t of_0_64;
+	uint8_t of_1_28;
+	uint8_t of_2_58;
+	uint8_t of_5_16;
+	uint8_t of_10_32;
+	uint8_t of_neg_20_32;
+} HDC2080_Temperature_Offset_t;
+
+typedef struct HDC2080_Humidity_Offset_t {
+	uint8_t of_0_2;
+	uint8_t of_0_4;
+	uint8_t of_0_8;
+	uint8_t of_1_6;
+	uint8_t of_3_1;
+	uint8_t of_6_3;
+	uint8_t of_12_5;
+	uint8_t of_neg_25_0;
+} HDC2080_Humidity_Offset_t;
+
+typedef enum HDC2080_Heater_t {
+	HDC2080_Heater_Off	 = 0,
+	HDC2080_Heater_On	 = 1
+} HDC2080_Heater_t;
+
+typedef enum HDC2080_Measurement_Configuration_t {
+	HDC2080_Measurement_Configuration_Humidity_Temperature	= 0,
+	HDC2080_Measurement_Configuration_Temperature	 		= 1
+} HDC2080_Measurement_Configuration_t;
+
+typedef enum HDC2080_Measurement_Trigger_t {
+	HDC2080_Measurement_Trigger_No_Action	= 0,
+	HDC2080_Measurement_Trigger_Start	 	= 1
+} HDC2080_Measurement_Trigger_t;
+
+typedef enum HDC2080_Pin_Configuration_t {
+	HDC2080_Pin_Configuration_High_Z	= 0,
+	HDC2080_Pin_Configuration_Enable	= 1
+} HDC2080_Pin_Configuration_t;
+
+typedef enum HDC2080_Pin_Interrupt_Polarity_t {
+	HDC2080_Pin_Configuration_Active_Low	= 0,
+	HDC2080_Pin_Configuration_Active_High	= 1
+} HDC2080_Pin_Interrupt_Polarity_t;
+
+typedef enum HDC2080_Pin_Interrupt_Mode_t {
+	HDC2080_Pin_Configuration_Level_Sensitive	= 0,
+	HDC2080_Pin_Configuration_Comparator_Mode	= 1
+} HDC2080_Pin_Interrupt_Mode_t;
+
+typedef struct HDC2080_INT_Pin_Configuration_t {
+	HDC2080_Pin_Configuration_t pin;
+	HDC2080_Pin_Interrupt_Polarity_t polarity;
+	HDC2080_Pin_Interrupt_Mode_t mode;
+} HDC2080_INT_Pin_Configuration_t;
+
+typedef enum HDC2080_Interrupt_State_t {
+	HDC2080_Interrupt_State_Disabled	= 0,
+	HDC2080_Interrupt_State_Enabled		= 1
+} HDC2080_Interrupt_State_t;
+
+typedef struct HDC2080_Interrupts_t {
+	HDC2080_Interrupt_State_t dataready;
+	HDC2080_Interrupt_State_t temperature_thr_high;
+	HDC2080_Interrupt_State_t temperature_thr_low;
+	HDC2080_Interrupt_State_t humidity_thr_high;
+	HDC2080_Interrupt_State_t humidity_thr_low;
+} HDC2080_Interrupts_t;
+
 HDC2080_Status_t HDC2080_Init(HDC2080_t *HDC2080, uint8_t hdc2080_address, HDC2080_I2C_Read_t I2C_Read, HDC2080_I2C_Write_t I2C_Write);
-HDC2080_Status_t HDC2080_Set_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Temperature_Resolution_t resolution);
-HDC2080_Status_t HDC2080_Set_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Humidity_Resolution_t resolution);
-HDC2080_Status_t HDC2080_Set_AMM_Rate(HDC2080_t *HDC2080, HDC2080_AMM_Rate_t rate);
 HDC2080_Status_t HDC2080_Start_Conversion(HDC2080_t *HDC2080);
-HDC2080_Status_t HDC2080_Read_Temperature(HDC2080_t *HDC2080, float *temperature);
-HDC2080_Status_t HDC2080_Read_Humidity(HDC2080_t *HDC2080, float *humidity);
-HDC2080_Status_t HDC2080_Read_Temperature_Humidity(HDC2080_t *HDC2080, float *temperature, float *humidity);
-HDC2080_Status_t HDC2080_Read_Max_Temperature(HDC2080_t *HDC2080, float *temperature);
-HDC2080_Status_t HDC2080_Read_Max_Humidity(HDC2080_t *HDC2080, float *humidity);
+HDC2080_Status_t HDC2080_Soft_Reset(HDC2080_t *HDC2080);
+
+HDC2080_Status_t HDC2080_Set_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Temperature_Resolution_t resolution);
+HDC2080_Status_t HDC2080_Get_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Temperature_Resolution_t *resolution);
+
+HDC2080_Status_t HDC2080_Set_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Humidity_Resolution_t resolution);
+HDC2080_Status_t HDC2080_Get_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Humidity_Resolution_t *resolution);
+
+HDC2080_Status_t HDC2080_Set_AMM_Rate(HDC2080_t *HDC2080, HDC2080_AMM_Rate_t rate);
+HDC2080_Status_t HDC2080_Get_AMM_Rate(HDC2080_t *HDC2080, HDC2080_AMM_Rate_t *rate);
+
+HDC2080_Status_t HDC2080_Get_Temperature(HDC2080_t *HDC2080, float *temperature);
+HDC2080_Status_t HDC2080_Get_Humidity(HDC2080_t *HDC2080, float *humidity);
+HDC2080_Status_t HDC2080_Get_Temperature_Humidity(HDC2080_t *HDC2080, float *temperature, float *humidity);
+
+HDC2080_Status_t HDC2080_Get_Max_Temperature(HDC2080_t *HDC2080, float *temperature);
+HDC2080_Status_t HDC2080_Get_Max_Humidity(HDC2080_t *HDC2080, float *humidity);
+
+HDC2080_Status_t HDC2080_Set_Temperature_Offset(HDC2080_t *HDC2080, HDC2080_Temperature_Offset_t temperature_offset);
 HDC2080_Status_t HDC2080_Get_Temperature_Offset(HDC2080_t *HDC2080, float *temperature_offset);
+
+HDC2080_Status_t HDC2080_Set_Humidity_Offset(HDC2080_t *HDC2080, HDC2080_Humidity_Offset_t humidity_offset);
 HDC2080_Status_t HDC2080_Get_Humidity_Offset(HDC2080_t *HDC2080, float *humidity_offset);
+
+HDC2080_Status_t HDC2080_Set_Temperature_Threshold_Low(HDC2080_t *HDC2080, float temperature_threshold);
+HDC2080_Status_t HDC2080_Get_Temperature_Threshold_Low(HDC2080_t *HDC2080, float *temperature_threshold);
+
+HDC2080_Status_t HDC2080_Set_Temperature_Threshold_High(HDC2080_t *HDC2080, float temperature_threshold);
+HDC2080_Status_t HDC2080_Get_Temperature_Threshold_High(HDC2080_t *HDC2080, float *temperature_threshold);
+
+HDC2080_Status_t HDC2080_Set_Humidity_Threshold_Low(HDC2080_t *HDC2080, float humidity_threshold);
+HDC2080_Status_t HDC2080_Get_Humidity_Threshold_Low(HDC2080_t *HDC2080, float *humidity_threshold);
+
+HDC2080_Status_t HDC2080_Set_Humidity_Threshold_High(HDC2080_t *HDC2080, float humidity_threshold);
+HDC2080_Status_t HDC2080_Get_Humidity_Threshold_High(HDC2080_t *HDC2080, float *humidity_threshold);
+
+HDC2080_Status_t HDC2080_Set_Heater(HDC2080_t *HDC2080, HDC2080_Heater_t heater_state);
+HDC2080_Status_t HDC2080_Get_Heater(HDC2080_t *HDC2080, HDC2080_Heater_t *heater_state);
+
+HDC2080_Status_t HDC2080_Set_Measurement_Configuration(HDC2080_t *HDC2080, HDC2080_Measurement_Configuration_t configuration);
+HDC2080_Status_t HDC2080_Get_Measurement_Configuration(HDC2080_t *HDC2080, HDC2080_Measurement_Configuration_t *configuration);
+
+HDC2080_Status_t HDC2080_Set_Measurement_Trigger(HDC2080_t *HDC2080, HDC2080_Measurement_Trigger_t trigger);
+HDC2080_Status_t HDC2080_Get_Measurement_Trigger(HDC2080_t *HDC2080, HDC2080_Measurement_Trigger_t *trigger);
+
+HDC2080_Status_t HDC2080_Get_Manufacturer_ID(HDC2080_t *HDC2080, uint16_t *id);
+HDC2080_Status_t HDC2080_Get_Device_ID(HDC2080_t *HDC2080, uint16_t *id);
+
+HDC2080_Status_t HDC2080_Set_INT_Pin_Configuration(HDC2080_t *HDC2080, HDC2080_INT_Pin_Configuration_t config);
+HDC2080_Status_t HDC2080_Get_INT_Pin_Configuration(HDC2080_t *HDC2080, HDC2080_INT_Pin_Configuration_t *config);
+
+HDC2080_Status_t HDC2080_Set_Interrupt_Configuration(HDC2080_t *HDC2080, HDC2080_Interrupts_t config);
+HDC2080_Status_t HDC2080_Get_Interrupt_Configuration(HDC2080_t *HDC2080, HDC2080_Interrupts_t *config);
+
+HDC2080_Status_t HDC2080_Get_Active_Interrupt(HDC2080_t *HDC2080, HDC2080_Interrupts_t *interrupts);
 
 #endif /* _HDC2080_H_ */
