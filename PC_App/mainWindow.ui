@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1183</width>
-    <height>777</height>
+    <width>1402</width>
+    <height>876</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,20 +19,35 @@
      <rect>
       <x>10</x>
       <y>90</y>
-      <width>1161</width>
-      <height>341</height>
+      <width>1381</width>
+      <height>521</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>1381</width>
+      <height>521</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>1381</width>
+      <height>521</height>
+     </size>
     </property>
     <property name="font">
      <font>
       <pointsize>12</pointsize>
      </font>
     </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
     <property name="inputMethodHints">
      <set>Qt::ImhPreferNumbers</set>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -55,7 +70,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Temperature</string>
+       <string>Temperature [C]</string>
       </property>
       <property name="scaledContents">
        <bool>false</bool>
@@ -64,8 +79,8 @@
      <widget class="QLabel" name="hum_label">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>100</y>
+        <x>20</x>
+        <y>240</y>
         <width>301</width>
         <height>31</height>
        </rect>
@@ -78,7 +93,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Humidity</string>
+       <string>Humidity [% RH]</string>
       </property>
       <property name="scaledContents">
        <bool>false</bool>
@@ -89,8 +104,8 @@
        <rect>
         <x>10</x>
         <y>40</y>
-        <width>111</width>
-        <height>41</height>
+        <width>171</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="smallDecimalPoint">
@@ -109,10 +124,10 @@
      <widget class="QLCDNumber" name="hum_lcdNumber">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>130</y>
-        <width>111</width>
-        <height>41</height>
+        <x>20</x>
+        <y>270</y>
+        <width>171</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="smallDecimalPoint">
@@ -120,6 +135,134 @@
       </property>
       <property name="value" stdset="0">
        <double>0.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="ReadMeasurementsButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>410</y>
+        <width>171</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Sensor Read
+Mesurements</string>
+      </property>
+     </widget>
+     <widget class="PlotWidget" name="tempGraphWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>-10</y>
+        <width>901</width>
+        <height>231</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="PlotWidget" name="humGraphWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>240</y>
+        <width>901</width>
+        <height>231</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="Line" name="line_2">
+      <property name="geometry">
+       <rect>
+        <x>17</x>
+        <y>220</y>
+        <width>1351</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="tempPlotLen">
+      <property name="geometry">
+       <rect>
+        <x>1200</x>
+        <y>30</y>
+        <width>151</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>10</number>
+      </property>
+      <property name="maximum">
+       <number>1000</number>
+      </property>
+      <property name="value">
+       <number>50</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="baud_label_4">
+      <property name="geometry">
+       <rect>
+        <x>1200</x>
+        <y>10</y>
+        <width>171</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Visible measurements</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="humPlotLen">
+      <property name="geometry">
+       <rect>
+        <x>1200</x>
+        <y>260</y>
+        <width>151</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>10</number>
+      </property>
+      <property name="maximum">
+       <number>1000</number>
+      </property>
+      <property name="value">
+       <number>50</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="baud_label_5">
+      <property name="geometry">
+       <rect>
+        <x>1200</x>
+        <y>240</y>
+        <width>171</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Visible measurements</string>
       </property>
      </widget>
     </widget>
@@ -319,6 +462,98 @@ Deinitialize</string>
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="tab_3">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <attribute name="title">
+      <string>Registers</string>
+     </attribute>
+     <widget class="QPushButton" name="ReadRegsButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>141</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Read
+Registers</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="WriteRegsButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>141</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Write
+Registers</string>
+      </property>
+     </widget>
+     <widget class="Line" name="line">
+      <property name="geometry">
+       <rect>
+        <x>153</x>
+        <y>10</y>
+        <width>20</width>
+        <height>351</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="register1_lineEdit">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>40</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0x00</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>10</y>
+        <width>131</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Register 1</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QTextEdit" name="globalResponse">
     <property name="enabled">
@@ -327,9 +562,9 @@ Deinitialize</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>440</y>
-      <width>1161</width>
-      <height>291</height>
+      <y>620</y>
+      <width>1381</width>
+      <height>231</height>
      </rect>
     </property>
     <property name="font">
@@ -462,12 +697,20 @@ Deinitialize</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1183</width>
+     <width>1402</width>
      <height>21</height>
     </rect>
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlotWidget</class>
+   <extends>QWidget</extends>
+   <header>pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
