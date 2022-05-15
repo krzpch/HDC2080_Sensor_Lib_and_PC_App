@@ -577,7 +577,7 @@ HDC2080_Status_t HDC2080_Set_INT_Pin_Configuration(HDC2080_t *HDC2080, HDC2080_I
 	tmp_reg &= ~(RESET_DRDY_INT_CONF_DRDY_INT_EN | RESET_DRDY_INT_CONF_INT_POL | RESET_DRDY_INT_CONF_INT_MODE); // clear DRDY/INT_EN, INT_POL, INT_MODE bits
 	tmp_reg  |= ((config.pin << 2) | (config.polarity << 1) | config.mode);
 
-	HDC2080->I2C_Write(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg); // overwrite register
+	HDC2080->I2C_Write(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg); // overwrite register
 
 	return HDC2080_OK;
 }
