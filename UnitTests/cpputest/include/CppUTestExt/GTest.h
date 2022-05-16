@@ -29,6 +29,8 @@
 #define GTEST__H_
 
 #undef new
+#undef strdup
+#undef strndup
 
 #undef RUN_ALL_TESTS
 
@@ -37,6 +39,12 @@
 #ifdef CPPUTEST_USE_NEW_MACROS
 #include "CppUTest/MemoryLeakDetectorNewMacros.h"
 #endif
+
+#ifdef CPPUTEST_USE_MALLOC_MACROS
+#include "CppUTest/MemoryLeakDetectorMallocMacros.h"
+#endif
+
+#include "CppUTestExt/GTestSupport.h"
 
 #ifndef RUN_ALL_TESTS
 #define GTEST_VERSION_GTEST_1_7

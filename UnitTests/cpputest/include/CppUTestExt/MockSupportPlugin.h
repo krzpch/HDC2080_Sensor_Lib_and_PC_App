@@ -35,13 +35,15 @@ class MockSupportPlugin : public TestPlugin
 {
 public:
     MockSupportPlugin(const SimpleString& name = "MockSupportPLugin");
-    virtual ~MockSupportPlugin();
+    virtual ~MockSupportPlugin() _destructor_override;
 
     virtual void preTestAction(UtestShell&, TestResult&) _override;
     virtual void postTestAction(UtestShell&, TestResult&) _override;
 
     virtual void installComparator(const SimpleString& name, MockNamedValueComparator& comparator);
     virtual void installCopier(const SimpleString& name, MockNamedValueCopier& copier);
+
+    void clear();
 private:
     MockNamedValueComparatorsAndCopiersRepository repository_;
 };
