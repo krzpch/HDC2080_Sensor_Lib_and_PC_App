@@ -265,7 +265,7 @@ Mesurements</string>
        <string>Visible measurements</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="TestButton_2">
+     <widget class="QPushButton" name="GetTempButton">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -286,7 +286,7 @@ Mesurements</string>
  Temperature</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="TestButton_3">
+     <widget class="QPushButton" name="GetHumButton">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -347,7 +347,7 @@ Humidity</string>
        </font>
       </property>
      </widget>
-     <widget class="QPushButton" name="TestButton">
+     <widget class="QPushButton" name="InitButton">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -368,7 +368,7 @@ Humidity</string>
 Initialize</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="TestButton_4">
+     <widget class="QPushButton" name="DeinitButton">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -650,12 +650,12 @@ Deinitialize</string>
       </property>
       <item>
        <property name="text">
-        <string>Temperature and Humidity</string>
+        <string comment="11" extracomment="22">Temperature and Humidity</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Temperature</string>
+        <string comment="33" extracomment="44">Temperature</string>
        </property>
       </item>
      </widget>
@@ -786,7 +786,7 @@ Deinitialize</string>
        </font>
       </property>
       <property name="text">
-       <string/>
+       <string>0.00</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="minTempInt_lineEdit">
@@ -804,7 +804,7 @@ Deinitialize</string>
        </font>
       </property>
       <property name="text">
-       <string/>
+       <string>0.00</string>
       </property>
      </widget>
      <widget class="QLabel" name="baud_label_12">
@@ -858,7 +858,7 @@ Deinitialize</string>
        </font>
       </property>
       <property name="text">
-       <string/>
+       <string>0.00</string>
       </property>
      </widget>
      <widget class="QLabel" name="baud_label_14">
@@ -912,7 +912,7 @@ Deinitialize</string>
        </font>
       </property>
       <property name="text">
-       <string/>
+       <string>0.00</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="maxTempInt_checkBox">
@@ -920,7 +920,7 @@ Deinitialize</string>
        <rect>
         <x>660</x>
         <y>90</y>
-        <width>261</width>
+        <width>361</width>
         <height>21</height>
        </rect>
       </property>
@@ -933,7 +933,7 @@ Deinitialize</string>
        <rect>
         <x>660</x>
         <y>120</y>
-        <width>261</width>
+        <width>361</width>
         <height>21</height>
        </rect>
       </property>
@@ -946,7 +946,7 @@ Deinitialize</string>
        <rect>
         <x>660</x>
         <y>150</y>
-        <width>261</width>
+        <width>361</width>
         <height>21</height>
        </rect>
       </property>
@@ -959,7 +959,7 @@ Deinitialize</string>
        <rect>
         <x>660</x>
         <y>180</y>
-        <width>261</width>
+        <width>361</width>
         <height>21</height>
        </rect>
       </property>
@@ -972,7 +972,7 @@ Deinitialize</string>
        <rect>
         <x>660</x>
         <y>210</y>
-        <width>261</width>
+        <width>361</width>
         <height>21</height>
        </rect>
       </property>
@@ -1017,98 +1017,6 @@ Deinitialize</string>
       </property>
       <property name="orientation">
        <enum>Qt::Vertical</enum>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_3">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <attribute name="title">
-      <string>Registers</string>
-     </attribute>
-     <widget class="QPushButton" name="ReadRegsButton">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>141</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Read
-Registers</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="WriteRegsButton">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>90</y>
-        <width>141</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Write
-Registers</string>
-      </property>
-     </widget>
-     <widget class="Line" name="line">
-      <property name="geometry">
-       <rect>
-        <x>153</x>
-        <y>10</y>
-        <width>20</width>
-        <height>351</height>
-       </rect>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="register1_lineEdit">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>180</x>
-        <y>40</y>
-        <width>131</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>0x00</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>180</x>
-        <y>10</y>
-        <width>131</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Register 1</string>
       </property>
      </widget>
     </widget>
@@ -1232,7 +1140,7 @@ Registers</string>
      <x>0</x>
      <y>0</y>
      <width>1402</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

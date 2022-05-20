@@ -13,14 +13,18 @@ static int HDC_CLI_Cmd_Get_Humidity(int argc, char **argv);
 static int HDC_CLI_Cmd_Get_Measurements(int argc, char **argv);
 static int HDC_CLI_Cmd_Config_Temperature(int argc, char **argv);
 static int HDC_CLI_Cmd_Config_Humidity(int argc, char **argv);
+static int HDC_CLI_Cmd_Config_Interrupts(int argc, char **argv);
+static int HDC_CLI_Cmd_Init(int argc, char **argv);
 
 static CLI_Cmd_t HDC2080_Cmds[] =
 {
     {.command = "get_temperature",		.cmd_handler = &HDC_CLI_Cmd_Get_Temperature},
     {.command = "get_humidity",			.cmd_handler = &HDC_CLI_Cmd_Get_Humidity},
-    {.command = "config_temperature",	.cmd_handler = &HDC_CLI_Cmd_Config_Temperature},
 	{.command = "get_measurements",		.cmd_handler = &HDC_CLI_Cmd_Get_Measurements},
-    {.command = "config_humidity",		.cmd_handler = &HDC_CLI_Cmd_Config_Humidity}
+    {.command = "config_temperature",	.cmd_handler = &HDC_CLI_Cmd_Config_Temperature},
+    {.command = "config_humidity",		.cmd_handler = &HDC_CLI_Cmd_Config_Humidity},
+	{.command = "config_interrupts",	.cmd_handler = &HDC_CLI_Cmd_Config_Interrupts},
+	{.command = "sensor_initialize",	.cmd_handler = &HDC_CLI_Cmd_Init}
 };
 
 CLI_t HDC2080_CLI =
@@ -72,24 +76,24 @@ static int HDC_CLI_Cmd_Get_Measurements(int argc, char **argv)
 static int HDC_CLI_Cmd_Config_Temperature(int argc, char **argv)
 {
     // TODO - temporary solution for testing
-    if (0U == strcmp(argv[1], "resolution_9kbit"))
+    if (0U == strcmp(argv[1], "res9bit"))
     {
-        char output[] = {"9bit_OK\n\r"};
+        char output[] = {"9bit_OK\n"};
         HAL_UART_Transmit(UART_HANDLER, output, strlen(output), 10U);
     }
-    else if (0U == strcmp(argv[1], "resolution_11kbit"))
+    else if (0U == strcmp(argv[1], "res11bit"))
     {
-        char output[] = {"11bit_OK\n\r"};
+        char output[] = {"11bit_OK\n"};
         HAL_UART_Transmit(UART_HANDLER, output, strlen(output), 10U);
     }
-    else if (0U == strcmp(argv[1], "resolution_14kbit"))
+    else if (0U == strcmp(argv[1], "res14bit"))
     {
-        char output[] = {"14bit_OK\n\r"};
+        char output[] = {"14bit_OK\n"};
         HAL_UART_Transmit(UART_HANDLER, output, strlen(output), 10U);
     }
     else
     {
-        char output[] = {"NOT_OK\n\r"};
+        char output[] = {"NOT_OK\n"};
         HAL_UART_Transmit(UART_HANDLER, output, strlen(output), 10U);
     }
 
@@ -99,25 +103,70 @@ static int HDC_CLI_Cmd_Config_Temperature(int argc, char **argv)
 static int HDC_CLI_Cmd_Config_Humidity(int argc, char **argv)
 {
     // TODO - temporary solution for testing
-    if (0U == strcmp(argv[1], "resolution_9kbit"))
+    if (0U == strcmp(argv[1], "res9bit"))
     {
-        char output[] = {"9bit_OK\n\r"};
+        char output[] = {"9bit_OK\n"};
         HAL_UART_Transmit(UART_HANDLER, output, strlen(output), 10U);
     }
-    else if (0U == strcmp(argv[1], "resolution_11kbit"))
+    else if (0U == strcmp(argv[1], "res11bit"))
     {
-        char output[] = {"11bit_OK\n\r"};
+        char output[] = {"11bit_OK\n"};
         HAL_UART_Transmit(UART_HANDLER, output, strlen(output), 10U);
     }
-    else if (0U == strcmp(argv[1], "resolution_14kbit"))
+    else if (0U == strcmp(argv[1], "res14bit"))
     {
-        char output[] = {"14bit_OK\n\r"};
+        char output[] = {"14bit_OK\n"};
         HAL_UART_Transmit(UART_HANDLER, output, strlen(output), 10U);
     }
     else
     {
-        char output[] = {"NOT_OK\n\r"};
+        char output[] = {"NOT_OK\n"};
         HAL_UART_Transmit(UART_HANDLER, output, strlen(output), 10U);
     }
-    return 1; // TODO
+    return 1;
 }
+
+static int HDC_CLI_Cmd_Init(int argc, char **argv)
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (0U == strcmp(argv[i], "temp&hum"))
+		{
+	        char output[] = {"temp&hum_OK\n"};
+	        HAL_UART_Transmit(UART_HANDLER, output, strlen(output), 10U);
+		}
+		else if (0U == strcmp(argv[i], "onlyTemp"))
+		{
+	        char output[] = {"onlyTemp_OK\n"};
+	        HAL_UART_Transmit(UART_HANDLER, output, strlen(output), 10U);
+		}
+		else if (0U == strcmp(argv[i], "autoOff"))
+		{
+	        char output[] = {"autoOff_OK\n"};
+	        HAL_UART_Transmit(UART_HANDLER, output, strlen(output), 10U);
+		}
+		else if (0U == strcmp(argv[i], "1/120Hz"))
+		{
+	        char output[] = {"1/120Hz_OK\n"};
+	        HAL_UART_Transmit(UART_HANDLER, output, strlen(output), 10U);
+		}
+		else
+		{
+	        char output[] = {"NOT_OK\n"};
+	        HAL_UART_Transmit(UART_HANDLER, output, strlen(output), 10U);
+		}
+	}
+
+	return 1;
+}
+
+static int HDC_CLI_Cmd_Config_Interrupts(int argc, char **argv)
+{
+	for (int i = 1; i < argc; i++)
+	{
+
+	}
+	return 1;
+}
+
+

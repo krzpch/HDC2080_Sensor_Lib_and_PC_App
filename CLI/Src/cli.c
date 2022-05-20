@@ -64,10 +64,10 @@ void CLI_Process_Comand(CLI_t *cli)
         else
         {
             // TODO: cmd not found string in cli_t struct
-            char *cmd_not_found = "Command Not Found\n\r";
+            char *cmd_not_found = "Command Not Found\n";
             CLI_Print(cli, cmd_not_found);
             CLI_Print(cli, argv[0]);
-            CLI_Print(cli, "\n\r");
+            CLI_Print(cli, "\n");
         }
 
         cli->is_cmd_pending = CLI_FALSE;
