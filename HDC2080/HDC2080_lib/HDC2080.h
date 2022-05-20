@@ -190,62 +190,356 @@ typedef struct HDC2080_Interrupts_t {
 	HDC2080_Interrupt_State_t humidity_thr_low;
 } HDC2080_Interrupts_t;
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param hdc2080_address 
+ * @param I2C_Read 
+ * @param I2C_Write 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Init(HDC2080_t *HDC2080, uint8_t hdc2080_address, HDC2080_I2C_Read_t I2C_Read, HDC2080_I2C_Write_t I2C_Write);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Start_Conversion(HDC2080_t *HDC2080);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Soft_Reset(HDC2080_t *HDC2080);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param resolution 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Set_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Temperature_Resolution_t resolution);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param resolution 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Temperature_Resolution_t *resolution);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param resolution 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Set_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Humidity_Resolution_t resolution);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param resolution 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Humidity_Resolution_t *resolution);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param rate 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Set_AMM_Rate(HDC2080_t *HDC2080, HDC2080_AMM_Rate_t rate);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param rate 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_AMM_Rate(HDC2080_t *HDC2080, HDC2080_AMM_Rate_t *rate);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param temperature 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Temperature(HDC2080_t *HDC2080, float *temperature);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param humidity 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Humidity(HDC2080_t *HDC2080, float *humidity);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param temperature 
+ * @param humidity 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Temperature_Humidity(HDC2080_t *HDC2080, float *temperature, float *humidity);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param temperature 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Max_Temperature(HDC2080_t *HDC2080, float *temperature);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param humidity 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Max_Humidity(HDC2080_t *HDC2080, float *humidity);
 
-HDC2080_Status_t HDC2080_Set_Temperature_Offset(HDC2080_t *HDC2080, HDC2080_Temperature_Offset_t temperature_offset);
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param temperature_offset 
+ * @return HDC2080_Status_t 
+ */
+HDC2080_Status_t HDC2080_Set_Temperature_Offset(HDC2080_t *HDC2080, HDC2080_Temperature_Offset_t *temperature_offset);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param temperature_offset 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Temperature_Offset(HDC2080_t *HDC2080, float *temperature_offset);
 
-HDC2080_Status_t HDC2080_Set_Humidity_Offset(HDC2080_t *HDC2080, HDC2080_Humidity_Offset_t humidity_offset);
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param humidity_offset 
+ * @return HDC2080_Status_t 
+ */
+HDC2080_Status_t HDC2080_Set_Humidity_Offset(HDC2080_t *HDC2080, HDC2080_Humidity_Offset_t *humidity_offset);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param humidity_offset 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Humidity_Offset(HDC2080_t *HDC2080, float *humidity_offset);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param temperature_threshold 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Set_Temperature_Threshold_Low(HDC2080_t *HDC2080, float temperature_threshold);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param temperature_threshold 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Temperature_Threshold_Low(HDC2080_t *HDC2080, float *temperature_threshold);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param temperature_threshold 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Set_Temperature_Threshold_High(HDC2080_t *HDC2080, float temperature_threshold);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param temperature_threshold 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Temperature_Threshold_High(HDC2080_t *HDC2080, float *temperature_threshold);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param humidity_threshold 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Set_Humidity_Threshold_Low(HDC2080_t *HDC2080, float humidity_threshold);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param humidity_threshold 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Humidity_Threshold_Low(HDC2080_t *HDC2080, float *humidity_threshold);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param humidity_threshold 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Set_Humidity_Threshold_High(HDC2080_t *HDC2080, float humidity_threshold);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param humidity_threshold 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Humidity_Threshold_High(HDC2080_t *HDC2080, float *humidity_threshold);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param heater_state 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Set_Heater(HDC2080_t *HDC2080, HDC2080_Heater_t heater_state);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param heater_state 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Heater(HDC2080_t *HDC2080, HDC2080_Heater_t *heater_state);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param configuration 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Set_Measurement_Configuration(HDC2080_t *HDC2080, HDC2080_Measurement_Configuration_t configuration);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param configuration 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Measurement_Configuration(HDC2080_t *HDC2080, HDC2080_Measurement_Configuration_t *configuration);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param trigger 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Set_Measurement_Trigger(HDC2080_t *HDC2080, HDC2080_Measurement_Trigger_t trigger);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param trigger 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Measurement_Trigger(HDC2080_t *HDC2080, HDC2080_Measurement_Trigger_t *trigger);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param id 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Manufacturer_ID(HDC2080_t *HDC2080, uint16_t *id);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param id 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Device_ID(HDC2080_t *HDC2080, uint16_t *id);
 
-HDC2080_Status_t HDC2080_Set_INT_Pin_Configuration(HDC2080_t *HDC2080, HDC2080_INT_Pin_Configuration_t config);
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param config 
+ * @return HDC2080_Status_t 
+ */
+HDC2080_Status_t HDC2080_Set_INT_Pin_Configuration(HDC2080_t *HDC2080, HDC2080_INT_Pin_Configuration_t *config);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param config 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_INT_Pin_Configuration(HDC2080_t *HDC2080, HDC2080_INT_Pin_Configuration_t *config);
 
-HDC2080_Status_t HDC2080_Set_Interrupt_Configuration(HDC2080_t *HDC2080, HDC2080_Interrupts_t config);
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param config 
+ * @return HDC2080_Status_t 
+ */
+HDC2080_Status_t HDC2080_Set_Interrupt_Configuration(HDC2080_t *HDC2080, HDC2080_Interrupts_t *config);
+
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param config 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Interrupt_Configuration(HDC2080_t *HDC2080, HDC2080_Interrupts_t *config);
 
+/**
+ * @brief 
+ * 
+ * @param HDC2080 
+ * @param interrupts 
+ * @return HDC2080_Status_t 
+ */
 HDC2080_Status_t HDC2080_Get_Active_Interrupt(HDC2080_t *HDC2080, HDC2080_Interrupts_t *interrupts);
 
 #endif /* _HDC2080_H_ */
