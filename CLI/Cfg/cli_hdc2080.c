@@ -7,6 +7,7 @@
 #endif
 
 #define CHAR_BUFF_SIZE  (12U)
+#define HDC2080_CLI_BUFFER_SIZE (512U)
 
 static int HDC_CLI_Print(char *c);
 static int HDC_CLI_Cmd_Get_Temperature(int argc, char **argv);
@@ -22,8 +23,11 @@ static CLI_Cmd_t HDC2080_Cmds[] =
     {.command = "config_humidity",     .cmd_handler = &HDC_CLI_Cmd_Config_Humidity}
 };
 
+static char HDC2080_CLI_Rx_Buffer[HDC2080_CLI_BUFFER_SIZE] = {0};
+
 CLI_t HDC2080_CLI =
 {
+    .queue = {.buffer = HDC2080_CLI_Rx_Buffer, .size = HDC2080_CLI_BUFFER_SIZE},
     .func_print_char = &HDC_CLI_Print,
     .commands = HDC2080_Cmds,
     .commands_nb = sizeof(HDC2080_Cmds) / sizeof(HDC2080_Cmds[0])
