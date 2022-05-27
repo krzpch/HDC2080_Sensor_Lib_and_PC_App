@@ -177,7 +177,7 @@ class MainGUI(QtWidgets.QMainWindow):
             self.transmit_and_show(self.hdc.init(data[0]))
             self.transmit_and_show(self.hdc.config_temp(data[1]))
             self.transmit_and_show(self.hdc.config_hum(data[2]))
-            self.transmit_and_show(self.hdc.config_int(data[3]))
+            # self.transmit_and_show(self.hdc.config_int(data[3]))
             
     ## Function for sending "Initialize" message 
     def transmitDeinit_onClick(self):
