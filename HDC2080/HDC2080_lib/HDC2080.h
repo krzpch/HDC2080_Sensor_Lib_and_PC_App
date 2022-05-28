@@ -96,17 +96,11 @@ typedef struct HDC2080_t {
 	HDC2080_I2C_Write_t I2C_Write;
 } HDC2080_t;
 
-typedef enum HDC2080_Temperature_Resolution_t {
+typedef enum HDC2080_Resolution_t {
 	HDC2080_Temperature_Resolution_14_bit	 = 0,
 	HDC2080_Temperature_Resolution_11_bit	 = 1,
 	HDC2080_Temperature_Resolution_9_bit	 = 2
-} HDC2080_Temperature_Resolution_t;
-
-typedef enum HDC2080_Humidity_Resolution_t {
-	HDC2080_Humidity_Resolution_14_bit	 = 0,
-	HDC2080_Humidity_Resolution_11_bit	 = 1,
-	HDC2080_Humidity_Resolution_9_bit	 = 2
-} HDC2080_Humidity_Resolution_t;
+} HDC2080_Resolution_t;
 
 typedef enum HDC2080_AMM_Rate_t { 	  // Auto measurement mode
 	HDC2080_AMM_Rate_1_Disabled	 = 0, // disabled (measurement must be initiated via I2C)
@@ -120,25 +114,25 @@ typedef enum HDC2080_AMM_Rate_t { 	  // Auto measurement mode
 } HDC2080_AMM_Rate_t;
 
 typedef struct HDC2080_Temperature_Offset_t {
-	uint8_t of_0_16;
-	uint8_t of_0_32;
-	uint8_t of_0_64;
-	uint8_t of_1_28;
-	uint8_t of_2_58;
-	uint8_t of_5_16;
-	uint8_t of_10_32;
-	uint8_t of_neg_20_32;
+	uint8_t of_0_16;		// offset 0.16
+	uint8_t of_0_32;		// offset 0.32
+	uint8_t of_0_64;		// offset 0.64
+	uint8_t of_1_28;		// offset 1.28
+	uint8_t of_2_58;		// offset 2.58
+	uint8_t of_5_16;		// offset 5.16
+	uint8_t of_10_32;		// offset 10.32
+	uint8_t of_neg_20_32;	// offset -20.32
 } HDC2080_Temperature_Offset_t;
 
 typedef struct HDC2080_Humidity_Offset_t {
-	uint8_t of_0_2;
-	uint8_t of_0_4;
-	uint8_t of_0_8;
-	uint8_t of_1_6;
-	uint8_t of_3_1;
-	uint8_t of_6_3;
-	uint8_t of_12_5;
-	uint8_t of_neg_25_0;
+	uint8_t of_0_2;			// offset 0.2
+	uint8_t of_0_4;			// offset 0.4
+	uint8_t of_0_8;			// offset 0.8
+	uint8_t of_1_6;			// offset 1.6
+	uint8_t of_3_1;			// offset 3.1
+	uint8_t of_6_3;			// offset 6.3
+	uint8_t of_12_5;		// offset 12.5
+	uint8_t of_neg_25_0;	// offset -25.0
 } HDC2080_Humidity_Offset_t;
 
 typedef enum HDC2080_Heater_t {
@@ -224,7 +218,7 @@ HDC2080_Status_t HDC2080_Soft_Reset(HDC2080_t *HDC2080);
  * @param resolution 
  * @return HDC2080_Status_t 
  */
-HDC2080_Status_t HDC2080_Set_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Temperature_Resolution_t resolution);
+HDC2080_Status_t HDC2080_Set_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Resolution_t resolution);
 
 /**
  * @brief 
@@ -233,7 +227,7 @@ HDC2080_Status_t HDC2080_Set_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_
  * @param resolution 
  * @return HDC2080_Status_t 
  */
-HDC2080_Status_t HDC2080_Get_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Temperature_Resolution_t *resolution);
+HDC2080_Status_t HDC2080_Get_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Resolution_t *resolution);
 
 /**
  * @brief 
@@ -242,7 +236,7 @@ HDC2080_Status_t HDC2080_Get_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_
  * @param resolution 
  * @return HDC2080_Status_t 
  */
-HDC2080_Status_t HDC2080_Set_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Humidity_Resolution_t resolution);
+HDC2080_Status_t HDC2080_Set_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Resolution_t resolution);
 
 /**
  * @brief 
@@ -251,7 +245,7 @@ HDC2080_Status_t HDC2080_Set_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Hum
  * @param resolution 
  * @return HDC2080_Status_t 
  */
-HDC2080_Status_t HDC2080_Get_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Humidity_Resolution_t *resolution);
+HDC2080_Status_t HDC2080_Get_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Resolution_t *resolution);
 
 /**
  * @brief 

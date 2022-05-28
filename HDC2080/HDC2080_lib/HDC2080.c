@@ -37,12 +37,15 @@ HDC2080_Status_t HDC2080_Soft_Reset(HDC2080_t *HDC2080)
 	
 	uint8_t reg = RESET_DRDY_INT_CONF_SOFT_RES;
 
-	HDC2080->I2C_Write(HDC2080->address, RESET_DRDY_INT_CONF_REG, &reg); // set soft reset bit
+	if (HDC2080->I2C_Write(HDC2080->address, RESET_DRDY_INT_CONF_REG, &reg) != HDC2080_OK) // set soft reset bit
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
 
-HDC2080_Status_t HDC2080_Set_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Temperature_Resolution_t resolution)
+HDC2080_Status_t HDC2080_Set_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Resolution_t resolution)
 {
 	if ((HDC2080 == NULL) || (resolution > 2) || (resolution < 0))
 	{
@@ -51,17 +54,23 @@ HDC2080_Status_t HDC2080_Set_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1); // read register state 
+	if (HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1) != HDC2080_OK) // read register state 
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_reg &= ~(MEASUREMENT_CONFIGURATION_TRES_0 | MEASUREMENT_CONFIGURATION_TRES_1); // clear TRES bits
 	tmp_reg  |= resolution << 6; // set AMM rate bits
 
-	HDC2080->I2C_Write(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg); // overwrite register
+	if (HDC2080->I2C_Write(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg) != HDC2080_OK) // overwrite register
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
 
-HDC2080_Status_t HDC2080_Get_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Temperature_Resolution_t *resolution)
+HDC2080_Status_t HDC2080_Get_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Resolution_t *resolution)
 {
 	if ((HDC2080 == NULL) || (resolution == NULL))
 	{
@@ -70,7 +79,10 @@ HDC2080_Status_t HDC2080_Get_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1); // read register state 
+	if (HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1) != HDC2080_OK) // read register state 
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_reg &= (MEASUREMENT_CONFIGURATION_TRES_0 | MEASUREMENT_CONFIGURATION_TRES_1); // clear all bits except resolution
 	*resolution = tmp_reg >> 6;
@@ -78,7 +90,7 @@ HDC2080_Status_t HDC2080_Get_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_
 	return HDC2080_OK;
 }
 
-HDC2080_Status_t HDC2080_Set_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Humidity_Resolution_t resolution)
+HDC2080_Status_t HDC2080_Set_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Resolution_t resolution)
 {
 	if ((HDC2080 == NULL) || (resolution > 2) || (resolution < 0))
 	{
@@ -87,17 +99,23 @@ HDC2080_Status_t HDC2080_Set_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Hum
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_reg &= ~(MEASUREMENT_CONFIGURATION_HRES_0 | MEASUREMENT_CONFIGURATION_HRES_1); // clear HRES bits
 	tmp_reg  |= resolution << 4; // set AMM rate bits
 
-	HDC2080->I2C_Write(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg); // overwrite register
+	if (HDC2080->I2C_Write(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg) != HDC2080_OK) // overwrite register
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
 
-HDC2080_Status_t HDC2080_Get_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Humidity_Resolution_t *resolution)
+HDC2080_Status_t HDC2080_Get_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Resolution_t *resolution)
 {
 	if ((HDC2080 == NULL) || (resolution == NULL))
 	{
@@ -106,7 +124,10 @@ HDC2080_Status_t HDC2080_Get_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Hum
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_reg &= (MEASUREMENT_CONFIGURATION_HRES_0 | MEASUREMENT_CONFIGURATION_HRES_1); // clear all bits except resolution
 	*resolution = tmp_reg >> 4;
@@ -123,12 +144,18 @@ HDC2080_Status_t HDC2080_Set_AMM_Rate(HDC2080_t *HDC2080, HDC2080_AMM_Rate_t rat
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_reg &= ~(RESET_DRDY_INT_CONF_AMM_0 | RESET_DRDY_INT_CONF_AMM_1 | RESET_DRDY_INT_CONF_AMM_2); // clear AMM rate bits
 	tmp_reg  |= rate << 4; // set AMM rate bits
 
-	HDC2080->I2C_Write(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg); // overwrite register
+	if (HDC2080->I2C_Write(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg) != HDC2080_OK) // overwrite register
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -142,7 +169,10 @@ HDC2080_Status_t HDC2080_Get_AMM_Rate(HDC2080_t *HDC2080, HDC2080_AMM_Rate_t *ra
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_reg &= (RESET_DRDY_INT_CONF_AMM_0 | RESET_DRDY_INT_CONF_AMM_1 | RESET_DRDY_INT_CONF_AMM_2); // // clear all bits except amm rate
 	*rate = tmp_reg >> 4; // set AMM rate bits
@@ -161,12 +191,18 @@ HDC2080_Status_t HDC2080_Get_Temperature(HDC2080_t *HDC2080, float *temperature)
 	uint8_t temp_lh[2] = {0};
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, INTERRUPT_DRDY_REG, &tmp_reg, 1); // read INTERRUPT_DRDY_REG register
+	if (HDC2080->I2C_Read(HDC2080->address, INTERRUPT_DRDY_REG, &tmp_reg, 1) != HDC2080_OK) // read INTERRUPT_DRDY_REG register
+	{
+		return HDC2080_ERROR;
+	}
 
 	if((tmp_reg & INTERRUPT_DRDY_DRDY_STATUS) == INTERRUPT_DRDY_DRDY_STATUS) // check if data is ready
 	{
-		HDC2080->I2C_Read(HDC2080->address, TEMPERATURE_LOW_REG, temp_lh, 2); // read TEMPERATURE_LOW and TEMPERATURE_HIGH registers
-
+		if (HDC2080->I2C_Read(HDC2080->address, TEMPERATURE_LOW_REG, temp_lh, 2) != HDC2080_OK) // read TEMPERATURE_LOW and TEMPERATURE_HIGH registers
+		{
+			return HDC2080_ERROR;
+		}
+		
 		temp = (uint16_t)temp_lh[1] << 8; // merge two 8bit variables to 16bit
 		temp = temp | (uint16_t)temp_lh[0];
 
@@ -191,11 +227,17 @@ HDC2080_Status_t HDC2080_Get_Humidity(HDC2080_t *HDC2080, float *humidity)
 	uint8_t hum_lh[2] = {0};
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, INTERRUPT_DRDY_REG, &tmp_reg, 1); // read INTERRUPT_DRDY_REG register
+	if (HDC2080->I2C_Read(HDC2080->address, INTERRUPT_DRDY_REG, &tmp_reg, 1) != HDC2080_OK) // read INTERRUPT_DRDY_REG register
+	{
+		return HDC2080_ERROR;
+	}
 
 	if((tmp_reg & INTERRUPT_DRDY_DRDY_STATUS) == INTERRUPT_DRDY_DRDY_STATUS) // check if data is ready
 	{
-		HDC2080->I2C_Read(HDC2080->address, HUMIDITY_LOW_REG, hum_lh, 2); // read HUMIDITY_LOW and HUMIDITY_HIGH registers
+		if (HDC2080->I2C_Read(HDC2080->address, HUMIDITY_LOW_REG, hum_lh, 2) != HDC2080_OK) // read HUMIDITY_LOW and HUMIDITY_HIGH registers
+		{
+			return HDC2080_ERROR;
+		}
 
 		hum = (uint16_t)hum_lh[1] << 8; // merge two 8bit variables to 16bit
 		hum = hum | (uint16_t)hum_lh[0];
@@ -222,11 +264,17 @@ HDC2080_Status_t HDC2080_Get_Temperature_Humidity(HDC2080_t *HDC2080, float *tem
 	uint8_t temp_hum[4] = {0};
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, INTERRUPT_DRDY_REG, &tmp_reg, 1); // read INTERRUPT_DRDY_REG register
+	if (HDC2080->I2C_Read(HDC2080->address, INTERRUPT_DRDY_REG, &tmp_reg, 1) != HDC2080_OK) // read INTERRUPT_DRDY_REG register
+	{
+		return HDC2080_ERROR;
+	}
 
 	if((tmp_reg & INTERRUPT_DRDY_DRDY_STATUS) == INTERRUPT_DRDY_DRDY_STATUS) // check if data is ready
 	{
-		HDC2080->I2C_Read(HDC2080->address, TEMPERATURE_LOW_REG, temp_hum, 4); // read TEMPERATURE_LOW and TEMPERATURE_HIGH registers
+		if (HDC2080->I2C_Read(HDC2080->address, TEMPERATURE_LOW_REG, temp_hum, 4) != HDC2080_OK) // read TEMPERATURE_LOW and TEMPERATURE_HIGH registers
+		{
+			return HDC2080_ERROR;
+		}
 
 		temp = (uint16_t)temp_hum[1] << 8; // merge two 8bit variables to 16bit
 		temp = temp | (uint16_t)temp_hum[0];
@@ -255,7 +303,10 @@ HDC2080_Status_t HDC2080_Get_Max_Temperature(HDC2080_t *HDC2080, float *temperat
 	
 	uint8_t temp = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, TEMPERATURE_MAX_REG, &temp, 1); // read TEMPERATURE_MAX_REG register
+	if (HDC2080->I2C_Read(HDC2080->address, TEMPERATURE_MAX_REG, &temp, 1) != HDC2080_OK) // read TEMPERATURE_MAX_REG register
+	{
+		return HDC2080_ERROR;
+	}
 
 	*temperature = ((float)temp/256)*165-40.5; // convert to degrees Celsius
 
@@ -271,7 +322,10 @@ HDC2080_Status_t HDC2080_Get_Max_Humidity(HDC2080_t *HDC2080, float *humidity)
 	
 	uint8_t hum = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, HUMIDITY_MAX_REG, &hum, 1); // read HUMIDITY_MAX_REG register
+	if (HDC2080->I2C_Read(HDC2080->address, HUMIDITY_MAX_REG, &hum, 1) != HDC2080_OK) // read HUMIDITY_MAX_REG register
+	{
+		return HDC2080_ERROR;
+	}
 
 	*humidity = ((float)hum/256)*100; // convert to %RH
 
@@ -287,7 +341,10 @@ HDC2080_Status_t HDC2080_Set_Temperature_Offset(HDC2080_t *HDC2080, HDC2080_Temp
 	
 	uint8_t reg = _HDC2080_Temperature_Offset_to_reg(temperature_offset);
 	
-	HDC2080->I2C_Write(HDC2080->address, TEMP_OFFSET_ADJUST_REG, &reg); // overwrite register
+	if (HDC2080->I2C_Write(HDC2080->address, TEMP_OFFSET_ADJUST_REG, &reg) != HDC2080_OK) // overwrite register
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -303,7 +360,10 @@ HDC2080_Status_t HDC2080_Get_Temperature_Offset(HDC2080_t *HDC2080, float *tempe
 	float offset = 0.0f;
 	float temperature_offset_coeffs[8] = {0.16f, 0.32f, 0.64f, 1.28f, 2.58f, 5.16f, 10.32f, -20.32f};
 
-	HDC2080->I2C_Read(HDC2080->address, TEMP_OFFSET_ADJUST_REG, &offset_reg, 1); // read TEMP_OFFSET_ADJUST_REG register
+	if (HDC2080->I2C_Read(HDC2080->address, TEMP_OFFSET_ADJUST_REG, &offset_reg, 1) != HDC2080_OK) // read TEMP_OFFSET_ADJUST_REG register
+	{
+		return HDC2080_ERROR;
+	}
 
 	for(uint8_t i = 0; i<8; i++)
 	{
@@ -327,7 +387,10 @@ HDC2080_Status_t HDC2080_Set_Humidity_Offset(HDC2080_t *HDC2080, HDC2080_Humidit
 	
 	uint8_t reg = _HDC2080_Humidity_Offset_to_reg(humidity_offset);
 
-	HDC2080->I2C_Write(HDC2080->address, HUM_OFFSET_ADJUST_REG, &reg); // overwrite register
+	if (HDC2080->I2C_Write(HDC2080->address, HUM_OFFSET_ADJUST_REG, &reg) != HDC2080_OK) // overwrite register
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -343,7 +406,10 @@ HDC2080_Status_t HDC2080_Get_Humidity_Offset(HDC2080_t *HDC2080, float *humidity
 	float offset = 0.0f;
 	float humidity_offset_coeffs[8] = {0.2f, 0.4f, 0.8f, 1.6f, 3.1f, 6.3f, 12.5f, -25.0f};
 
-	HDC2080->I2C_Read(HDC2080->address, HUM_OFFSET_ADJUST_REG, &offset_reg, 1); // read HUM_OFFSET_ADJUST_REG register
+	if (HDC2080->I2C_Read(HDC2080->address, HUM_OFFSET_ADJUST_REG, &offset_reg, 1) != HDC2080_OK) // read HUM_OFFSET_ADJUST_REG register
+	{
+		return HDC2080_ERROR;
+	}
 
 	for(uint8_t i = 0; i<8; i++)
 	{
@@ -379,7 +445,10 @@ HDC2080_Status_t HDC2080_Set_Temperature_Threshold_Low(HDC2080_t *HDC2080, float
 
 	reg = (uint8_t)temp;
 
-	HDC2080->I2C_Write(HDC2080->address, TEMP_THR_L_REG, &reg);
+	if (HDC2080->I2C_Write(HDC2080->address, TEMP_THR_L_REG, &reg) != HDC2080_OK)
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -393,7 +462,10 @@ HDC2080_Status_t HDC2080_Get_Temperature_Threshold_Low(HDC2080_t *HDC2080, float
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, TEMP_THR_L_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, TEMP_THR_L_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	*temperature_threshold = ((float)tmp_reg/256)*165-40.5;
 
@@ -421,7 +493,10 @@ HDC2080_Status_t HDC2080_Set_Temperature_Threshold_High(HDC2080_t *HDC2080, floa
 
 	reg = (uint8_t)temp;
 
-	HDC2080->I2C_Write(HDC2080->address, TEMP_THR_H_REG, &reg);
+	if (HDC2080->I2C_Write(HDC2080->address, TEMP_THR_H_REG, &reg) != HDC2080_OK)
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -435,7 +510,10 @@ HDC2080_Status_t HDC2080_Get_Temperature_Threshold_High(HDC2080_t *HDC2080, floa
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, TEMP_THR_H_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, TEMP_THR_H_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	*temperature_threshold = ((float)tmp_reg/256)*165-40.5;
 
@@ -462,7 +540,10 @@ HDC2080_Status_t HDC2080_Set_Humidity_Threshold_Low(HDC2080_t *HDC2080, float hu
 
 	reg = (uint8_t)temp;
 
-	HDC2080->I2C_Write(HDC2080->address, RH_THR_L_REG, &reg);
+	if (HDC2080->I2C_Write(HDC2080->address, RH_THR_L_REG, &reg) != HDC2080_OK)
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -476,7 +557,10 @@ HDC2080_Status_t HDC2080_Get_Humidity_Threshold_Low(HDC2080_t *HDC2080, float *h
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, RH_THR_L_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, RH_THR_L_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	*humidity_threshold = ((float)tmp_reg/256)*100;
 
@@ -503,7 +587,10 @@ HDC2080_Status_t HDC2080_Set_Humidity_Threshold_High(HDC2080_t *HDC2080, float h
 
 	reg = (uint8_t)temp;
 
-	HDC2080->I2C_Write(HDC2080->address, RH_THR_H_REG, &reg);
+	if (HDC2080->I2C_Write(HDC2080->address, RH_THR_H_REG, &reg) != HDC2080_OK)
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -517,7 +604,10 @@ HDC2080_Status_t HDC2080_Get_Humidity_Threshold_High(HDC2080_t *HDC2080, float *
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, RH_THR_H_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, RH_THR_H_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	*humidity_threshold = ((float)tmp_reg/256)*100;
 
@@ -533,12 +623,18 @@ HDC2080_Status_t HDC2080_Set_Heater(HDC2080_t *HDC2080, HDC2080_Heater_t heater_
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_reg &= ~(RESET_DRDY_INT_CONF_HEAT_EN); // clear HEAT_EN bit
 	tmp_reg  |= heater_state << 3; // set HEAT_EN bit
 
-	HDC2080->I2C_Write(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg); // overwrite register
+	if (HDC2080->I2C_Write(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg) != HDC2080_OK) // overwrite register
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -552,7 +648,10 @@ HDC2080_Status_t HDC2080_Get_Heater(HDC2080_t *HDC2080, HDC2080_Heater_t *heater
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_reg &= RESET_DRDY_INT_CONF_HEAT_EN; // clear every bit except HEAT_EN bit
 	*heater_state = tmp_reg >> 3; 
@@ -569,12 +668,18 @@ HDC2080_Status_t HDC2080_Set_Measurement_Configuration(HDC2080_t *HDC2080, HDC20
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_reg &= ~(MEASUREMENT_CONFIGURATION_MEAS_CONF_0 | MEASUREMENT_CONFIGURATION_MEAS_CONF_1); // clear MEAS_CONF bits
 	tmp_reg  |= configuration << 2; // set MEAS_CONF bits
 
-	HDC2080->I2C_Write(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg); // overwrite register
+	if (HDC2080->I2C_Write(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg) != HDC2080_OK) // overwrite register
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -588,12 +693,18 @@ HDC2080_Status_t HDC2080_Get_Measurement_Configuration(HDC2080_t *HDC2080, HDC20
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_reg &= MEASUREMENT_CONFIGURATION_MEAS_CONF_0 | MEASUREMENT_CONFIGURATION_MEAS_CONF_1; // clear every bit except MEAS_CONF bits
 	*configuration = tmp_reg >> 2;
 
-	HDC2080->I2C_Write(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg); // overwrite register
+	if (HDC2080->I2C_Write(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg) != HDC2080_OK) // overwrite register
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -607,12 +718,18 @@ HDC2080_Status_t HDC2080_Set_Measurement_Trigger(HDC2080_t *HDC2080, HDC2080_Mea
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_reg &= ~MEASUREMENT_CONFIGURATION_MEAS_TRIG; // clear MEAS_TRIG bit
 	tmp_reg  |= trigger; // set MEAS_TRIG bit
 
-	HDC2080->I2C_Write(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg); // overwrite register
+	if (HDC2080->I2C_Write(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg) != HDC2080_OK) // overwrite register
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -626,12 +743,18 @@ HDC2080_Status_t HDC2080_Get_Measurement_Trigger(HDC2080_t *HDC2080, HDC2080_Mea
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_reg &= MEASUREMENT_CONFIGURATION_MEAS_TRIG; // clear every bit except MEAS_TRIG bit
 	*trigger = tmp_reg;
 
-	HDC2080->I2C_Write(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg); // overwrite register
+	if (HDC2080->I2C_Write(HDC2080->address, MEASUREMENT_CONFIGURATION_REG, &tmp_reg) != HDC2080_OK) // overwrite register
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -646,7 +769,10 @@ HDC2080_Status_t HDC2080_Get_Manufacturer_ID(HDC2080_t *HDC2080, uint16_t *id)
 	uint8_t id_lh[2] = {0};
 	uint16_t tmp_id = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, MANUFACTURER_ID_LOW_REG, id_lh, 2);
+	if (HDC2080->I2C_Read(HDC2080->address, MANUFACTURER_ID_LOW_REG, id_lh, 2) != HDC2080_OK)
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_id = (uint16_t)id_lh[1] << 8; // merge two 8bit variables to 16bit
 	tmp_id = tmp_id | (uint16_t)id_lh[0];
@@ -666,7 +792,10 @@ HDC2080_Status_t HDC2080_Get_Device_ID(HDC2080_t *HDC2080, uint16_t *id)
 	uint8_t id_lh[2] = {0};
 	uint16_t tmp_id = 0;
 	
-	HDC2080->I2C_Read(HDC2080->address, DEVICE_ID_LOW_REG, id_lh, 2);
+	if (HDC2080->I2C_Read(HDC2080->address, DEVICE_ID_LOW_REG, id_lh, 2) != HDC2080_OK)
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_id = (uint16_t)id_lh[1] << 8; // merge two 8bit variables to 16bit
 	tmp_id = tmp_id | (uint16_t)id_lh[0];
@@ -685,12 +814,18 @@ HDC2080_Status_t HDC2080_Set_INT_Pin_Configuration(HDC2080_t *HDC2080, HDC2080_I
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	tmp_reg &= ~(RESET_DRDY_INT_CONF_DRDY_INT_EN | RESET_DRDY_INT_CONF_INT_POL | RESET_DRDY_INT_CONF_INT_MODE); // clear DRDY/INT_EN, INT_POL, INT_MODE bits
 	tmp_reg  |= ((config->pin << 2) | (config->polarity << 1) | config->mode);
 
-	HDC2080->I2C_Write(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg); // overwrite register
+	if (HDC2080->I2C_Write(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg) != HDC2080_OK) // overwrite register
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -704,7 +839,10 @@ HDC2080_Status_t HDC2080_Get_INT_Pin_Configuration(HDC2080_t *HDC2080, HDC2080_I
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, RESET_DRDY_INT_CONF_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	config->mode = tmp_reg & RESET_DRDY_INT_CONF_INT_MODE;
 	config->polarity = (tmp_reg & RESET_DRDY_INT_CONF_INT_POL) >> 1;
@@ -725,7 +863,10 @@ HDC2080_Status_t HDC2080_Set_Interrupt_Configuration(HDC2080_t *HDC2080, HDC2080
 	tmp_reg = ((config->dataready << 7) | (config->temperature_thr_high << 6) | (config->temperature_thr_low << 5) |
 				(config->humidity_thr_high << 4) | (config->humidity_thr_low << 3));
 
-	HDC2080->I2C_Write(HDC2080->address, INTERRUPT_ENABLE_REG, &tmp_reg); // overwrite register
+	if (HDC2080->I2C_Write(HDC2080->address, INTERRUPT_ENABLE_REG, &tmp_reg) != HDC2080_OK) // overwrite register
+	{
+		return HDC2080_ERROR;
+	}
 
 	return HDC2080_OK;
 }
@@ -739,7 +880,10 @@ HDC2080_Status_t HDC2080_Get_Interrupt_Configuration(HDC2080_t *HDC2080, HDC2080
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, INTERRUPT_ENABLE_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, INTERRUPT_ENABLE_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	config->humidity_thr_low = (tmp_reg & INTERRUPT_ENABLE_HL_ENABLE) >> 3;
 	config->humidity_thr_high = (tmp_reg & INTERRUPT_ENABLE_HH_ENABLE) >> 4;
@@ -759,7 +903,10 @@ HDC2080_Status_t HDC2080_Get_Active_Interrupt(HDC2080_t *HDC2080, HDC2080_Interr
 	
 	uint8_t tmp_reg = 0;
 
-	HDC2080->I2C_Read(HDC2080->address, INTERRUPT_DRDY_REG, &tmp_reg, 1); // read register state
+	if (HDC2080->I2C_Read(HDC2080->address, INTERRUPT_DRDY_REG, &tmp_reg, 1) != HDC2080_OK) // read register state
+	{
+		return HDC2080_ERROR;
+	}
 
 	active_interrupts->humidity_thr_low = (tmp_reg & INTERRUPT_DRDY_HL_STATUS) >> 3;
 	active_interrupts->humidity_thr_high = (tmp_reg & INTERRUPT_DRDY_HH_STATUS) >> 4;
