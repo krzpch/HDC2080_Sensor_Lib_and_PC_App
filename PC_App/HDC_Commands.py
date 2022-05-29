@@ -16,11 +16,7 @@ class HDC2080():
     __res_dict              = {0: "res14bit", 1: "res11bit", 2: "res9bit"}
     __int_en_dict           = {0: "intDis", 1: "intAL", 2: "intAH"}
     __int_mode_dict         = {0: "levelSens", 1: "CompMode"}
-    __int_tempMax_dict      = {False: "intMaxTempDis",      True: "intMaxTempEn"}
-    __int_tempMin_dict      = {False: "intMinTempDis",      True: "intMinTempEn"}
-    __int_humMax_dict       = {False: "intMaxHumDis",       True: "intMaxHumEn"}
-    __int_humMin_dict       = {False: "intMinTempDis",      True: "intMinTempEn"}
-    __int_dataReady_dict    = {False: "intDataReadyDis",    True: "intDataReadyEn"}
+    __int_select_dict       = {0: "intTempMaxEn", 1: "intTempMinEn", 2: "intHumMaxEn", 3: "intHumMinEn", 4: "intDataReadyEn"}
     
     ## The Constructor
     def __init__(self):
@@ -32,47 +28,42 @@ class HDC2080():
         return command
 
     def config_temp(self, data) -> str:
-        command = "config_temperature " + self.__res_dict[data[0]] + " temp_offset:" + data[1] + "\n"
+        command = "config_temperature " + self.__res_dict[data[0]] + " temp_offset " + data[1] + "\n"
         return command
     
     def config_hum(self, data) -> str:
-        command = "config_humidity " + self.__res_dict[data[0]] + " hum_offset:" + data[1] + "\n"
+        command = "config_humidity " + self.__res_dict[data[0]] + " hum_offset " + data[1] + "\n"
         return command
     
     def config_int(self, data) -> str:
-        
-        int_conf = ""
-        if data[2] == False:
-            int_conf += self.__int_tempMax_dict[False] + " "
-        else:
-            int_conf += self.__int_tempMax_dict[True] + " maxTempIntVal:" + data[4] + " "
+        # Check if interrutps are enabled
+        if data[0] != 0: 
+            int_val = ""
+            if data[2] == 0:
+                int_val = data[3]
+            elif data[2] == 1:
+                int_val = data[4]
+            elif data[2] == 2:
+                int_val = data[5]
+            elif data[2] == 3:
+                int_val = data[6]
+            elif data[2] == 4:
+                pass
             
-        if data[3] == False:
-            int_conf += self.__int_tempMin_dict[False] + " "
+            command = "config_interrupts " + self.__int_en_dict[data[0]] + " " + self.__int_mode_dict[data[1]] + " " + \
+                self.__int_select_dict[data[2]] + " " + int_val + "\n"
+                
         else:
-            int_conf += self.__int_tempMin_dict[True] + " minTempIntVal:" + data[5] + " "
+            command = "config_interrupts " + self.__int_en_dict[data[0]] + "\n"
             
-        if data[4] == False:
-            int_conf += self.__int_humMax_dict[False] + " "
-        else:
-            int_conf += self.__int_humMax_dict[True] + " maxHumIntVal:" + data[8] + " "
-            
-        if data[5] == False:
-            int_conf += self.__int_humMin_dict[False] + " "
-        else:
-            int_conf += self.__int_humMin_dict[True] + " minHumIntVal:" + data[9] + " "
-            
-        if data[6] == False:
-            int_conf += self.__int_dataReady_dict[False]
-        else:
-            int_conf += self.__int_dataReady_dict[True]
-            
-        command = "config_interrupts " + self.__int_en_dict[data[0]] + " " + self.__int_mode_dict[data[1]] + " " + \
-            int_conf + "\n"
         return command
     
     def deinit(self) -> str:
-        command = "hdc_deinit\n"
+        command = "sensor_deinitialize\n"
+        return command
+
+    def force_measurement(self) -> str:
+        command = "force_measurement\n"
         return command
 
     def recv_temp(self) -> str:
