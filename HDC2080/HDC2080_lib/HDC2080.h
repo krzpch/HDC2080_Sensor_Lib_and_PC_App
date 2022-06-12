@@ -114,25 +114,25 @@ typedef enum HDC2080_AMM_Rate_t { 	  // Auto measurement mode
 } HDC2080_AMM_Rate_t;
 
 typedef struct HDC2080_Temperature_Offset_t {
-	uint8_t of_0_16;		// offset 0.16
-	uint8_t of_0_32;		// offset 0.32
-	uint8_t of_0_64;		// offset 0.64
-	uint8_t of_1_28;		// offset 1.28
-	uint8_t of_2_58;		// offset 2.58
-	uint8_t of_5_16;		// offset 5.16
-	uint8_t of_10_32;		// offset 10.32
-	uint8_t of_neg_20_32;	// offset -20.32
+	uint8_t of_0_16;		// offset 0.16		0 - disabled, other - enabled
+	uint8_t of_0_32;		// offset 0.32		0 - disabled, other - enabled
+	uint8_t of_0_64;		// offset 0.64		0 - disabled, other - enabled
+	uint8_t of_1_28;		// offset 1.28		0 - disabled, other - enabled
+	uint8_t of_2_58;		// offset 2.58		0 - disabled, other - enabled
+	uint8_t of_5_16;		// offset 5.16		0 - disabled, other - enabled
+	uint8_t of_10_32;		// offset 10.32		0 - disabled, other - enabled
+	uint8_t of_neg_20_32;	// offset -20.32	0 - disabled, other - enabled
 } HDC2080_Temperature_Offset_t;
 
 typedef struct HDC2080_Humidity_Offset_t {
-	uint8_t of_0_2;			// offset 0.2
-	uint8_t of_0_4;			// offset 0.4
-	uint8_t of_0_8;			// offset 0.8
-	uint8_t of_1_6;			// offset 1.6
-	uint8_t of_3_1;			// offset 3.1
-	uint8_t of_6_3;			// offset 6.3
-	uint8_t of_12_5;		// offset 12.5
-	uint8_t of_neg_25_0;	// offset -25.0
+	uint8_t of_0_2;			// offset 0.2	0 - disabled, other - enabled
+	uint8_t of_0_4;			// offset 0.4	0 - disabled, other - enabled
+	uint8_t of_0_8;			// offset 0.8	0 - disabled, other - enabled
+	uint8_t of_1_6;			// offset 1.6	0 - disabled, other - enabled
+	uint8_t of_3_1;			// offset 3.1	0 - disabled, other - enabled
+	uint8_t of_6_3;			// offset 6.3	0 - disabled, other - enabled
+	uint8_t of_12_5;		// offset 12.5	0 - disabled, other - enabled
+	uint8_t of_neg_25_0;	// offset -25.0	0 - disabled, other - enabled
 } HDC2080_Humidity_Offset_t;
 
 typedef enum HDC2080_Heater_t {
@@ -166,9 +166,9 @@ typedef enum HDC2080_Pin_Interrupt_Mode_t {
 } HDC2080_Pin_Interrupt_Mode_t;
 
 typedef struct HDC2080_INT_Pin_Configuration_t {
-	HDC2080_Pin_Configuration_t pin;
-	HDC2080_Pin_Interrupt_Polarity_t polarity;
-	HDC2080_Pin_Interrupt_Mode_t mode;
+	HDC2080_Pin_Configuration_t pin;			
+	HDC2080_Pin_Interrupt_Polarity_t polarity;	
+	HDC2080_Pin_Interrupt_Mode_t mode;			
 } HDC2080_INT_Pin_Configuration_t;
 
 typedef enum HDC2080_Interrupt_State_t {
@@ -177,362 +177,362 @@ typedef enum HDC2080_Interrupt_State_t {
 } HDC2080_Interrupt_State_t;
 
 typedef struct HDC2080_Interrupts_t {
-	HDC2080_Interrupt_State_t dataready;
-	HDC2080_Interrupt_State_t temperature_thr_high;
-	HDC2080_Interrupt_State_t temperature_thr_low;
-	HDC2080_Interrupt_State_t humidity_thr_high;
-	HDC2080_Interrupt_State_t humidity_thr_low;
+	HDC2080_Interrupt_State_t dataready;			
+	HDC2080_Interrupt_State_t temperature_thr_high;	
+	HDC2080_Interrupt_State_t temperature_thr_low;	
+	HDC2080_Interrupt_State_t humidity_thr_high;	
+	HDC2080_Interrupt_State_t humidity_thr_low;		
 } HDC2080_Interrupts_t;
 
 /**
- * @brief 
+ * @brief Assign HDC2080 I2C address, read and write function pointers to handle
  * 
- * @param HDC2080 
- * @param hdc2080_address 
- * @param I2C_Read 
- * @param I2C_Write 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param hdc2080_address [in] HDC2080 I2C address
+ * @param I2C_Read [in] pointer to I2C read function
+ * @param I2C_Write [in] pointer to I2C write function
+ * @return HDC2080_OK if initialization was succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Init(HDC2080_t *HDC2080, uint8_t hdc2080_address, HDC2080_I2C_Read_t I2C_Read, HDC2080_I2C_Write_t I2C_Write);
 
 /**
- * @brief 
+ * @brief Starts conversion
  * 
- * @param HDC2080 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Start_Conversion(HDC2080_t *HDC2080);
 
 /**
- * @brief 
+ * @brief Soft resets HDC2080
  * 
- * @param HDC2080 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Soft_Reset(HDC2080_t *HDC2080);
 
 /**
- * @brief 
+ * @brief Sets current temperature bit resolution
  * 
- * @param HDC2080 
- * @param resolution 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param resolution [in] bit resolution (9-bit, 11-bit and 14-bit posibble)
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Set_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Resolution_t resolution);
 
 /**
- * @brief 
+ * @brief Gets temperature bit resolution
  * 
- * @param HDC2080 
- * @param resolution 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param resolution [out] pointer to bit resolution
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR 
  */
 HDC2080_Status_t HDC2080_Get_Temperature_Resolution(HDC2080_t *HDC2080, HDC2080_Resolution_t *resolution);
 
 /**
- * @brief 
+ * @brief Sets humidity bit resolution
  * 
- * @param HDC2080 
- * @param resolution 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param resolution [in] bit resolution (9-bit, 11-bit and 14-bit posibble)
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR 
  */
 HDC2080_Status_t HDC2080_Set_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Resolution_t resolution);
 
 /**
- * @brief 
+ * @brief Gets current humidity bit resolution
  * 
- * @param HDC2080 
- * @param resolution 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param resolution [out] pointer to bit resolution
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR 
  */
 HDC2080_Status_t HDC2080_Get_Humidity_Resolution(HDC2080_t *HDC2080, HDC2080_Resolution_t *resolution);
 
 /**
- * @brief 
+ * @brief Sets Rate at which auto measurements are taken
  * 
- * @param HDC2080 
- * @param rate 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param rate [in] rate of measurement
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR 
  */
 HDC2080_Status_t HDC2080_Set_AMM_Rate(HDC2080_t *HDC2080, HDC2080_AMM_Rate_t rate);
 
 /**
- * @brief 
+ * @brief Gets current auto measurement rate
  * 
- * @param HDC2080 
- * @param rate 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param rate [out] pointer to measurement rate
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR 
  */
 HDC2080_Status_t HDC2080_Get_AMM_Rate(HDC2080_t *HDC2080, HDC2080_AMM_Rate_t *rate);
 
 /**
- * @brief 
+ * @brief Gets temperature
  * 
- * @param HDC2080 
- * @param temperature 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param temperature [out] pointer to temperature
+ * @return HDC2080_OK if succesful, HDC2080_DNR if conversion is not copmlete, otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Temperature(HDC2080_t *HDC2080, float *temperature);
 
 /**
- * @brief 
+ * @brief Gets humidity
  * 
- * @param HDC2080 
- * @param humidity 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param humidity [out] pointer to humidity
+ * @return HDC2080_OK if succesful, HDC2080_DNR if conversion is not copmlete, otherwise HDC2080_ERROR 
  */
 HDC2080_Status_t HDC2080_Get_Humidity(HDC2080_t *HDC2080, float *humidity);
 
 /**
- * @brief 
+ * @brief Gets temperature and humidity
  * 
- * @param HDC2080 
- * @param temperature 
- * @param humidity 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param temperature [out] pointer to temperature
+ * @param humidity [out] pointer to humidity
+ * @return HDC2080_OK if succesful, HDC2080_DNR if conversion is not copmlete, otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Temperature_Humidity(HDC2080_t *HDC2080, float *temperature, float *humidity);
 
 /**
- * @brief 
+ * @brief Gets the highest measured temperature (register is updated only when auto measurement mode is disabled)
  * 
- * @param HDC2080 
- * @param temperature 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param temperature [out] pointer to temperature
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR 
  */
 HDC2080_Status_t HDC2080_Get_Max_Temperature(HDC2080_t *HDC2080, float *temperature);
 
 /**
- * @brief 
+ * @brief Gets the highest measured humidity (register is updated only when auto measurement mode is disabled)
  * 
- * @param HDC2080 
- * @param humidity 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param humidity [out] pointer to humidity
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Max_Humidity(HDC2080_t *HDC2080, float *humidity);
 
 /**
- * @brief 
+ * @brief Sets temperature offset
  * 
- * @param HDC2080 
- * @param temperature_offset 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param temperature_offset [in] pointer to temperature offset
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Set_Temperature_Offset(HDC2080_t *HDC2080, HDC2080_Temperature_Offset_t *temperature_offset);
 
 /**
- * @brief 
+ * @brief Gets current temperature offset
  * 
- * @param HDC2080 
- * @param temperature_offset 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param temperature_offset [out] pointer to temperature offset
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR 
  */
 HDC2080_Status_t HDC2080_Get_Temperature_Offset(HDC2080_t *HDC2080, float *temperature_offset);
 
 /**
- * @brief 
+ * @brief Sets humidity offset
  * 
- * @param HDC2080 
- * @param humidity_offset 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param humidity_offset [in] pointer to humidity offset
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Set_Humidity_Offset(HDC2080_t *HDC2080, HDC2080_Humidity_Offset_t *humidity_offset);
 
 /**
- * @brief 
+ * @brief Gets current current humidity offset
  * 
- * @param HDC2080 
- * @param humidity_offset 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param humidity_offset [out] pointer to humidity offset
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Humidity_Offset(HDC2080_t *HDC2080, float *humidity_offset);
 
 /**
- * @brief 
+ * @brief Sets temperature threshold for temperature low interrupt
  * 
- * @param HDC2080 
- * @param temperature_threshold 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param temperature_threshold [in] temperature threshold
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR 
  */
 HDC2080_Status_t HDC2080_Set_Temperature_Threshold_Low(HDC2080_t *HDC2080, float temperature_threshold);
 
 /**
- * @brief 
+ * @brief Gets current temperature threshold for temperature low interrupt
  * 
- * @param HDC2080 
- * @param temperature_threshold 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param temperature_threshold [out] pointer to temperature threshold
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Temperature_Threshold_Low(HDC2080_t *HDC2080, float *temperature_threshold);
 
 /**
- * @brief 
+ * @brief Sets temperature threshold for temperature high interrupt
  * 
- * @param HDC2080 
- * @param temperature_threshold 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param temperature_threshold [in] temperature threshold
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Set_Temperature_Threshold_High(HDC2080_t *HDC2080, float temperature_threshold);
 
 /**
- * @brief 
+ * @brief Gets current temperature threshold for temperature high interrupt
  * 
- * @param HDC2080 
- * @param temperature_threshold 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param temperature_threshold [out] pointer to temperature threshold
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Temperature_Threshold_High(HDC2080_t *HDC2080, float *temperature_threshold);
 
 /**
- * @brief 
+ * @brief Sets humidity threshold for humidity low interrupt
  * 
- * @param HDC2080 
- * @param humidity_threshold 
- * @return HDC2080_Status_t 
+ * @param [in] HDC2080 [in] HDC2080 handle
+ * @param [in] humidity_threshold [in] humidity threshold
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Set_Humidity_Threshold_Low(HDC2080_t *HDC2080, float humidity_threshold);
 
 /**
- * @brief 
+ * @brief Gets current humidity threshold for humidity low interrupt
  * 
- * @param HDC2080 
- * @param humidity_threshold 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param humidity_threshold [out] pointer to humidity threshold
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Humidity_Threshold_Low(HDC2080_t *HDC2080, float *humidity_threshold);
 
 /**
- * @brief 
+ * @brief Sets humidity threshold for humidity high interrupt
  * 
- * @param HDC2080 
- * @param humidity_threshold 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param humidity_threshold [in] humidity threshold
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Set_Humidity_Threshold_High(HDC2080_t *HDC2080, float humidity_threshold);
 
 /**
- * @brief 
+ * @brief Gets current humidity threshold for humidity high interrupt
  * 
- * @param HDC2080 
- * @param humidity_threshold 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param humidity_threshold [out] pointer to humidity threshold
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Humidity_Threshold_High(HDC2080_t *HDC2080, float *humidity_threshold);
 
 /**
- * @brief 
+ * @brief Turns on and off integrated heating element
  * 
- * @param HDC2080 
- * @param heater_state 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param heater_state [in] state of heating element
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Set_Heater(HDC2080_t *HDC2080, HDC2080_Heater_t heater_state);
 
 /**
- * @brief 
+ * @brief Gets current state of integrated heating element
  * 
- * @param HDC2080 
- * @param heater_state 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param heater_state [out] pointer state of heating element
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Heater(HDC2080_t *HDC2080, HDC2080_Heater_t *heater_state);
 
 /**
- * @brief 
+ * @brief Sets measured parameters (only temperature or temperature and humidity)
  * 
- * @param HDC2080 
- * @param configuration 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param configuration [in] measurement configuration
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Set_Measurement_Configuration(HDC2080_t *HDC2080, HDC2080_Measurement_Configuration_t configuration);
 
 /**
- * @brief 
+ * @brief Gets current measured parameters (only temperature or temperature and humidity)
  * 
- * @param HDC2080 
- * @param configuration 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param configuration [out] pointer to measurement configuration
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Measurement_Configuration(HDC2080_t *HDC2080, HDC2080_Measurement_Configuration_t *configuration);
 
 /**
- * @brief 
+ * @brief Sets if measurement is triggered or not
  * 
- * @param HDC2080 
- * @param trigger 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param trigger [in] trigger state
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Set_Measurement_Trigger(HDC2080_t *HDC2080, HDC2080_Measurement_Trigger_t trigger);
 
 /**
- * @brief 
+ * @brief Gets current trigger state
  * 
- * @param HDC2080 
- * @param trigger 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param trigger [out] pointer to trigger state
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Measurement_Trigger(HDC2080_t *HDC2080, HDC2080_Measurement_Trigger_t *trigger);
 
 /**
- * @brief 
+ * @brief Gets factory-programed identification value of manufacturer
  * 
- * @param HDC2080 
- * @param id 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param id [out] pointer to manufacturer id
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Manufacturer_ID(HDC2080_t *HDC2080, uint16_t *id);
 
 /**
- * @brief 
+ * @brief Gets factory-programed identification value of device
  * 
- * @param HDC2080 
- * @param id 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param id [out] pointer to device id
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Device_ID(HDC2080_t *HDC2080, uint16_t *id);
 
 /**
- * @brief 
+ * @brief Sets INT pin configuration (enables pin, sates interrupt polarity and interrupt mode (level sensitive or comparator mode))
  * 
- * @param HDC2080 
- * @param config 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param config [in] pointer to pin configuration
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Set_INT_Pin_Configuration(HDC2080_t *HDC2080, HDC2080_INT_Pin_Configuration_t *config);
 
 /**
- * @brief 
+ * @brief Gets current INT pin configuration 
  * 
- * @param HDC2080 
- * @param config 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param config [out] pointer to pin configuration
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_INT_Pin_Configuration(HDC2080_t *HDC2080, HDC2080_INT_Pin_Configuration_t *config);
 
 /**
- * @brief 
+ * @brief Enables and disables selected interrupts
  * 
- * @param HDC2080 
- * @param config 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param config [in] pointer to interrupt configuration
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Set_Interrupt_Configuration(HDC2080_t *HDC2080, HDC2080_Interrupts_t *config);
 
 /**
- * @brief 
+ * @brief Gets currently enabled interrupts
  * 
- * @param HDC2080 
- * @param config 
- * @return HDC2080_Status_t 
+ * @param DC2080 [in] HDC2080 handle
+ * @param config [out] pointer to interrupt configuration
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Interrupt_Configuration(HDC2080_t *HDC2080, HDC2080_Interrupts_t *config);
 
 /**
- * @brief 
+ * @brief Gets currently active interrupts
  * 
- * @param HDC2080 
- * @param interrupts 
- * @return HDC2080_Status_t 
+ * @param HDC2080 [in] HDC2080 handle
+ * @param interrupts [out] pointer to active interrupt state
+ * @return HDC2080_OK if succesful otherwise HDC2080_ERROR
  */
 HDC2080_Status_t HDC2080_Get_Active_Interrupt(HDC2080_t *HDC2080, HDC2080_Interrupts_t *interrupts);
 
