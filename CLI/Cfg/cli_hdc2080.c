@@ -28,7 +28,7 @@ static char HDC2080_CLI_Rx_Buffer[HDC2080_CLI_BUFFER_SIZE] = {0};
 CLI_t HDC2080_CLI =
 {
     .queue = {.buffer = HDC2080_CLI_Rx_Buffer, .size = HDC2080_CLI_BUFFER_SIZE},
-    .func_print_char = &HDC_CLI_Print,
+    .func_print = &HDC_CLI_Print,
     .commands = HDC2080_Cmds,
     .commands_nb = sizeof(HDC2080_Cmds) / sizeof(HDC2080_Cmds[0])
 };
