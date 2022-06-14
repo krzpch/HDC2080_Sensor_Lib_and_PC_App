@@ -4,11 +4,6 @@
 #
 
 
-
-## Class containing all funtions, configuration and data that can be used to controll sensor
-from setuptools import Command
-
-
 class HDC2080():
     ## Dictionaries for initialization command
     __config_dict           = {0: "temp&hum", 1: "onlyTemp"}
