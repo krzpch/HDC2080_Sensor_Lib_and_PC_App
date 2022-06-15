@@ -97,9 +97,9 @@ typedef struct HDC2080_t {
 } HDC2080_t;
 
 typedef enum HDC2080_Resolution_t {
-	HDC2080_Temperature_Resolution_14_bit	 = 0,
-	HDC2080_Temperature_Resolution_11_bit	 = 1,
-	HDC2080_Temperature_Resolution_9_bit	 = 2
+	HDC2080_Resolution_14_bit	 = 0,
+	HDC2080_Resolution_11_bit	 = 1,
+	HDC2080_Resolution_9_bit	 = 2
 } HDC2080_Resolution_t;
 
 typedef enum HDC2080_AMM_Rate_t { 	  // Auto measurement mode
