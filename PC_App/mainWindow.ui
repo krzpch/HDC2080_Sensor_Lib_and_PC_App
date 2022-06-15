@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1183</width>
-    <height>777</height>
+    <width>1402</width>
+    <height>860</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,16 +17,31 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>90</y>
-      <width>1161</width>
-      <height>341</height>
+      <width>1381</width>
+      <height>751</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>1381</width>
+      <height>751</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>1381</width>
+      <height>751</height>
+     </size>
     </property>
     <property name="font">
      <font>
       <pointsize>12</pointsize>
      </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="inputMethodHints">
      <set>Qt::ImhPreferNumbers</set>
@@ -55,7 +70,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Temperature</string>
+       <string>Temperature [C]</string>
       </property>
       <property name="scaledContents">
        <bool>false</bool>
@@ -65,7 +80,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>100</y>
+        <y>350</y>
         <width>301</width>
         <height>31</height>
        </rect>
@@ -78,7 +93,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Humidity</string>
+       <string>Humidity [% RH]</string>
       </property>
       <property name="scaledContents">
        <bool>false</bool>
@@ -89,8 +104,8 @@
        <rect>
         <x>10</x>
         <y>40</y>
-        <width>111</width>
-        <height>41</height>
+        <width>171</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="smallDecimalPoint">
@@ -110,9 +125,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>130</y>
-        <width>111</width>
-        <height>41</height>
+        <y>380</y>
+        <width>171</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="smallDecimalPoint">
@@ -120,6 +135,197 @@
       </property>
       <property name="value" stdset="0">
        <double>0.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="ForceMeasurementsButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>550</y>
+        <width>171</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Sensor Force
+Measurements</string>
+      </property>
+     </widget>
+     <widget class="PlotWidget" name="tempGraphWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>-10</y>
+        <width>961</width>
+        <height>330</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="PlotWidget" name="humGraphWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>360</y>
+        <width>961</width>
+        <height>330</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="Line" name="line_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>330</y>
+        <width>1351</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="tempPlotLen">
+      <property name="geometry">
+       <rect>
+        <x>1200</x>
+        <y>30</y>
+        <width>151</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>10</number>
+      </property>
+      <property name="maximum">
+       <number>1000</number>
+      </property>
+      <property name="value">
+       <number>250</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="baud_label_4">
+      <property name="geometry">
+       <rect>
+        <x>1200</x>
+        <y>10</y>
+        <width>171</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Visible measurements</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="humPlotLen">
+      <property name="geometry">
+       <rect>
+        <x>1200</x>
+        <y>380</y>
+        <width>151</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>10</number>
+      </property>
+      <property name="maximum">
+       <number>1000</number>
+      </property>
+      <property name="value">
+       <number>250</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="baud_label_5">
+      <property name="geometry">
+       <rect>
+        <x>1200</x>
+        <y>360</y>
+        <width>171</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Visible measurements</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="GetTempButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>171</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Sensor Read
+ Temperature</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="GetHumButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>450</y>
+        <width>171</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Sensor Read
+Humidity</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="ReadMeasurementsButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>630</y>
+        <width>171</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Sensor Read
+Mesurements</string>
       </property>
      </widget>
     </widget>
@@ -130,9 +336,9 @@
      <widget class="QPushButton" name="sendButton">
       <property name="geometry">
        <rect>
-        <x>670</x>
-        <y>260</y>
-        <width>181</width>
+        <x>480</x>
+        <y>460</y>
+        <width>171</width>
         <height>41</height>
        </rect>
       </property>
@@ -150,8 +356,8 @@
      <widget class="QLineEdit" name="send_lineEdit">
       <property name="geometry">
        <rect>
-        <x>670</x>
-        <y>210</y>
+        <x>10</x>
+        <y>460</y>
         <width>461</width>
         <height>41</height>
        </rect>
@@ -162,12 +368,12 @@
        </font>
       </property>
      </widget>
-     <widget class="QPushButton" name="TestButton">
+     <widget class="QPushButton" name="InitButton">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>141</width>
+        <width>171</width>
         <height>71</height>
        </rect>
       </property>
@@ -183,54 +389,12 @@
 Initialize</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="TestButton_2">
+     <widget class="QPushButton" name="DeinitButton">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>90</y>
-        <width>141</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Sensor Read
- Temperature</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="TestButton_3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>170</y>
-        <width>141</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Sensor Read
-Humidity</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="TestButton_4">
-      <property name="geometry">
-       <rect>
-        <x>160</x>
-        <y>10</y>
-        <width>141</width>
+        <width>171</width>
         <height>71</height>
        </rect>
       </property>
@@ -249,10 +413,10 @@ Deinitialize</string>
      <widget class="QLabel" name="baud_label_2">
       <property name="geometry">
        <rect>
-        <x>460</x>
-        <y>20</y>
+        <x>220</x>
+        <y>190</y>
         <width>191</width>
-        <height>16</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="font">
@@ -267,10 +431,10 @@ Deinitialize</string>
      <widget class="QLabel" name="baud_label_3">
       <property name="geometry">
        <rect>
-        <x>460</x>
-        <y>100</y>
+        <x>440</x>
+        <y>190</y>
         <width>191</width>
-        <height>16</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="font">
@@ -285,27 +449,632 @@ Deinitialize</string>
      <widget class="QLineEdit" name="tempOffset_lineEdit">
       <property name="geometry">
        <rect>
-        <x>460</x>
-        <y>50</y>
-        <width>181</width>
+        <x>240</x>
+        <y>220</y>
+        <width>51</width>
         <height>41</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
-       <string>0x00</string>
+       <string>00</string>
+      </property>
+      <property name="maxLength">
+       <number>2</number>
       </property>
      </widget>
      <widget class="QLineEdit" name="humOffset_lineEdit">
       <property name="geometry">
        <rect>
         <x>460</x>
-        <y>120</y>
-        <width>181</width>
+        <y>220</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>00</string>
+      </property>
+      <property name="maxLength">
+       <number>2</number>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="globalResponse">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>510</y>
+        <width>1351</width>
+        <height>201</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="undoRedoEnabled">
+       <bool>false</bool>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="tempRes_comboBox">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>140</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>14 bits</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>11 bits</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>9 bits</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QComboBox" name="humRes_comboBox">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>140</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>14 bits</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>11 bits</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>9 bits</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="baud_label_6">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>110</y>
+        <width>191</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Temperature resolution</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="baud_label_7">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>110</y>
+        <width>191</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Humidity resolution</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="autoMode_comboBox">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>40</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>Disabled</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>1/120 Hz</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>1/60 Hz</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>1/10 Hz</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>1/5 Hz</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>1 Hz</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>2 Hz</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>5 Hz</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="baud_label_8">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>10</y>
+        <width>191</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Auto measurements</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="measurementMode_comboBox">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>40</y>
+        <width>231</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string comment="11" extracomment="22">Temperature and Humidity</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string comment="33" extracomment="44">Temperature</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="baud_label_9">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>10</y>
+        <width>191</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Mesurement configuration</string>
+      </property>
+     </widget>
+     <widget class="Line" name="line_3">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>88</y>
+        <width>450</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="interruptEnable_comboBox">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>40</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>Disabled</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Active low</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Active high</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="baud_label_10">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>10</y>
+        <width>191</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Interrupts</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="interruptMode_comboBox">
+      <property name="geometry">
+       <rect>
+        <x>850</x>
+        <y>40</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>Level sensitive</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Comparator Mode</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="baud_label_11">
+      <property name="geometry">
+       <rect>
+        <x>850</x>
+        <y>10</y>
+        <width>191</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Interrupts mode</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="maxTempInt_lineEdit">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>310</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>0.00</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="minTempInt_lineEdit">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>390</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>0.00</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="baud_label_12">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>280</y>
+        <width>191</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Max temperature interrupt</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="baud_label_13">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>360</y>
+        <width>191</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Min temperature interrupt</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="maxHumInt_lineEdit">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>310</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>0.00</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="baud_label_14">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>280</y>
+        <width>191</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Max humidity interrupt</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="baud_label_15">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>360</y>
+        <width>191</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Min humidity interrupt</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="minHumInt_lineEdit">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>390</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>0.00</string>
+      </property>
+     </widget>
+     <widget class="Line" name="line_4">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>10</y>
+        <width>20</width>
+        <height>431</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
+     <widget class="Line" name="line_5">
+      <property name="geometry">
+       <rect>
+        <x>17</x>
+        <y>430</y>
+        <width>1351</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="Line" name="line_6">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>10</y>
+        <width>21</width>
+        <height>431</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="clearButton">
+      <property name="geometry">
+       <rect>
+        <x>1190</x>
+        <y>460</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Clear Display</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="interruptSelect_comboBox">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>140</y>
+        <width>361</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>Tempearture Max Value</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Tempearture Min Value</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Humidity Max Value</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Humidity Min Value</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Data Ready</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="baud_label_16">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>110</y>
+        <width>281</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Interrupts mode</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="baud_label_17">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>220</y>
+        <width>21</width>
         <height>41</height>
        </rect>
       </property>
@@ -315,34 +1084,86 @@ Deinitialize</string>
        </font>
       </property>
       <property name="text">
-       <string>0x00</string>
+       <string>0x</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="baud_label_18">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>220</y>
+        <width>21</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>0x</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="tempOffsetFloat_lineEdit">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>220</y>
+        <width>101</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>0.00</string>
+      </property>
+      <property name="maxLength">
+       <number>6</number>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="humOffsetFloat_lineEdit">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>540</x>
+        <y>220</y>
+        <width>101</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>0.00</string>
+      </property>
+      <property name="maxLength">
+       <number>6</number>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
-   </widget>
-   <widget class="QTextEdit" name="globalResponse">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>440</y>
-      <width>1161</width>
-      <height>291</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="acceptDrops">
-     <bool>false</bool>
-    </property>
-    <property name="undoRedoEnabled">
-     <bool>false</bool>
-    </property>
    </widget>
    <widget class="QComboBox" name="portSelectBox">
     <property name="geometry">
@@ -356,6 +1177,8 @@ Deinitialize</string>
     <property name="font">
      <font>
       <pointsize>12</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
    </widget>
@@ -409,6 +1232,8 @@ Deinitialize</string>
     <property name="font">
      <font>
       <pointsize>12</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="inputMethodHints">
@@ -462,12 +1287,20 @@ Deinitialize</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1183</width>
+     <width>1402</width>
      <height>21</height>
     </rect>
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlotWidget</class>
+   <extends>QWidget</extends>
+   <header>pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

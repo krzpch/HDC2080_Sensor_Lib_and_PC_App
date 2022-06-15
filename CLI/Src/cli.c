@@ -108,9 +108,11 @@ CLI_State_t CLI_Process_Comand(CLI_t *cli)
         }
         else
         {
-            char *cmd_not_found = "Command Not Found\n\r";
+            // TODO: cmd not found string in cli_t struct
+            char *cmd_not_found = "Command Not Found\n";
             CLI_Print(cli, cmd_not_found);
-            state = CLI_CMD_NOT_FOUND;
+            CLI_Print(cli, argv[0]);
+            CLI_Print(cli, "\n");
         }
 
         cli->cmd_pending_nb -= 1;

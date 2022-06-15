@@ -32,7 +32,6 @@
 extern "C" {
 #endif
 
-#include "CppUTest/CppUTestConfig.h"
 #include "CppUTest/StandardCLibrary.h"
 
 typedef enum {
@@ -41,8 +40,6 @@ typedef enum {
     MOCKVALUETYPE_INTEGER,
     MOCKVALUETYPE_LONG_INTEGER,
     MOCKVALUETYPE_UNSIGNED_LONG_INTEGER,
-    MOCKVALUETYPE_LONG_LONG_INTEGER,
-    MOCKVALUETYPE_UNSIGNED_LONG_LONG_INTEGER,
     MOCKVALUETYPE_DOUBLE,
     MOCKVALUETYPE_STRING,
     MOCKVALUETYPE_POINTER,
@@ -61,20 +58,13 @@ typedef struct SMockValue_c
         unsigned int unsignedIntValue;
         long int longIntValue;
         unsigned long int unsignedLongIntValue;
-#ifdef CPPUTEST_USE_LONG_LONG
-        cpputest_longlong longLongIntValue;
-        cpputest_ulonglong unsignedLongLongIntValue;
-#else
-        char longLongPlaceholder[CPPUTEST_SIZE_OF_FAKE_LONG_LONG_TYPE];
-#endif
         double doubleValue;
         const char* stringValue;
         void* pointerValue;
         const void* constPointerValue;
         void (*functionPointerValue)(void);
         const unsigned char* memoryBufferValue;
-        void* objectValue;
-        const void* constObjectValue;
+        const void* objectValue;
     } value;
 } MockValue_c;
 
@@ -86,8 +76,6 @@ struct SMockActualCall_c
     MockActualCall_c* (*withUnsignedIntParameters)(const char* name, unsigned int value);
     MockActualCall_c* (*withLongIntParameters)(const char* name, long int value);
     MockActualCall_c* (*withUnsignedLongIntParameters)(const char* name, unsigned long int value);
-    MockActualCall_c* (*withLongLongIntParameters)(const char* name, cpputest_longlong value);
-    MockActualCall_c* (*withUnsignedLongLongIntParameters)(const char* name, cpputest_ulonglong value);
     MockActualCall_c* (*withDoubleParameters)(const char* name, double value);
     MockActualCall_c* (*withStringParameters)(const char* name, const char* value);
     MockActualCall_c* (*withPointerParameters)(const char* name, void* value);
@@ -109,10 +97,6 @@ struct SMockActualCall_c
     long int (*returnLongIntValueOrDefault)(long int defaultValue);
     unsigned long int (*unsignedLongIntReturnValue)(void);
     unsigned long int (*returnUnsignedLongIntValueOrDefault)(unsigned long int defaultValue);
-    cpputest_longlong (*longLongIntReturnValue)(void);
-    cpputest_longlong (*returnLongLongIntValueOrDefault)(cpputest_longlong defaultValue);
-    cpputest_ulonglong (*unsignedLongLongIntReturnValue)(void);
-    cpputest_ulonglong (*returnUnsignedLongLongIntValueOrDefault)(cpputest_ulonglong defaultValue);
     const char* (*stringReturnValue)(void);
     const char* (*returnStringValueOrDefault)(const char * defaultValue);
     double (*doubleReturnValue)(void);
@@ -133,10 +117,7 @@ struct SMockExpectedCall_c
     MockExpectedCall_c* (*withUnsignedIntParameters)(const char* name, unsigned int value);
     MockExpectedCall_c* (*withLongIntParameters)(const char* name, long int value);
     MockExpectedCall_c* (*withUnsignedLongIntParameters)(const char* name, unsigned long int value);
-    MockExpectedCall_c* (*withLongLongIntParameters)(const char* name, cpputest_longlong value);
-    MockExpectedCall_c* (*withUnsignedLongLongIntParameters)(const char* name, cpputest_ulonglong value);
     MockExpectedCall_c* (*withDoubleParameters)(const char* name, double value);
-    MockExpectedCall_c* (*withDoubleParametersAndTolerance)(const char* name, double value, double tolerance);
     MockExpectedCall_c* (*withStringParameters)(const char* name, const char* value);
     MockExpectedCall_c* (*withPointerParameters)(const char* name, void* value);
     MockExpectedCall_c* (*withConstPointerParameters)(const char* name, const void* value);
@@ -145,7 +126,6 @@ struct SMockExpectedCall_c
     MockExpectedCall_c* (*withParameterOfType)(const char* type, const char* name, const void* value);
     MockExpectedCall_c* (*withOutputParameterReturning)(const char* name, const void* value, size_t size);
     MockExpectedCall_c* (*withOutputParameterOfTypeReturning)(const char* type, const char* name, const void* value);
-    MockExpectedCall_c* (*withUnmodifiedOutputParameter)(const char* name);
     MockExpectedCall_c* (*ignoreOtherParameters)(void);
 
     MockExpectedCall_c* (*andReturnBoolValue)(int value);
@@ -153,8 +133,6 @@ struct SMockExpectedCall_c
     MockExpectedCall_c* (*andReturnIntValue)(int value);
     MockExpectedCall_c* (*andReturnLongIntValue)(long int value);
     MockExpectedCall_c* (*andReturnUnsignedLongIntValue)(unsigned long int value);
-    MockExpectedCall_c* (*andReturnLongLongIntValue)(cpputest_longlong value);
-    MockExpectedCall_c* (*andReturnUnsignedLongLongIntValue)(cpputest_ulonglong value);
     MockExpectedCall_c* (*andReturnDoubleValue)(double value);
     MockExpectedCall_c* (*andReturnStringValue)(const char* value);
     MockExpectedCall_c* (*andReturnPointerValue)(void* value);
@@ -172,7 +150,7 @@ struct SMockSupport_c
     void (*strictOrder)(void);
     MockExpectedCall_c* (*expectOneCall)(const char* name);
     void (*expectNoCall)(const char* name);
-    MockExpectedCall_c* (*expectNCalls)(unsigned int number, const char* name);
+    MockExpectedCall_c* (*expectNCalls)(int number, const char* name);
     MockActualCall_c* (*actualCall)(const char* name);
     int (*hasReturnValue)(void);
     MockValue_c (*returnValue)(void);
@@ -186,10 +164,6 @@ struct SMockSupport_c
     long int (*returnLongIntValueOrDefault)(long int defaultValue);
     unsigned long int (*unsignedLongIntReturnValue)(void);
     unsigned long int (*returnUnsignedLongIntValueOrDefault)(unsigned long int defaultValue);
-    cpputest_longlong (*longLongIntReturnValue)(void);
-    cpputest_longlong (*returnLongLongIntValueOrDefault)(cpputest_longlong defaultValue);
-    cpputest_ulonglong (*unsignedLongLongIntReturnValue)(void);
-    cpputest_ulonglong (*returnUnsignedLongLongIntValueOrDefault)(cpputest_ulonglong defaultValue);
     const char* (*stringReturnValue)(void);
     const char* (*returnStringValueOrDefault)(const char * defaultValue);
     double (*doubleReturnValue)(void);
@@ -210,7 +184,6 @@ struct SMockSupport_c
     void (*setConstPointerData) (const char* name, const void* value);
     void (*setFunctionPointerData) (const char* name, void (*value)(void));
     void (*setDataObject) (const char* name, const char* type, void* value);
-    void (*setDataConstObject) (const char* name, const char* type, const void* value);
     MockValue_c (*getData)(const char* name);
 
     void (*disable)(void);

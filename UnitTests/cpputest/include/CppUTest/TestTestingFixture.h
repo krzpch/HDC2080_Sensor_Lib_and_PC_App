@@ -35,47 +35,106 @@ class TestTestingFixture
 {
 public:
 
-    TestTestingFixture();
-    virtual ~TestTestingFixture();
-    void flushOutputAndResetResult();
+    TestTestingFixture()
+    {
+        output_ = new StringBufferTestOutput();
+        result_ = new TestResult(*output_);
+        genTest_ = new ExecFunctionTestShell();
+        registry_ = new TestRegistry();
 
-    void addTest(UtestShell * test);
-    void installPlugin(TestPlugin* plugin);
+        registry_->setCurrentRegistry(registry_);
+        registry_->addTest(genTest_);
 
-    void setTestFunction(void(*testFunction)());
-    void setTestFunction(ExecFunction* testFunction);
-    void setSetup(void(*setupFunction)());
-    void setTeardown(void(*teardownFunction)());
+        lineOfCodeExecutedAfterCheck = false;
+    }
 
-    void setOutputVerbose();
-    void setRunTestsInSeperateProcess();
+    virtual ~TestTestingFixture()
+    {
+        registry_->setCurrentRegistry(0);
+        delete registry_;
+        delete result_;
+        delete output_;
+        delete genTest_;
+    }
 
-    void runTestWithMethod(void(*method)());
-    void runAllTests();
+    void addTest(UtestShell * test)
+    {
+        registry_->addTest(test);
+    }
 
-    size_t getFailureCount();
-    size_t getCheckCount();
-    size_t getIgnoreCount();
-    size_t getRunCount();
-    size_t getTestCount();
-    const SimpleString& getOutput();
-    TestRegistry* getRegistry();
+    void setTestFunction(void(*testFunction)())
+    {
+        genTest_->testFunction_ = testFunction;
+    }
 
-    bool hasTestFailed();
-    void assertPrintContains(const SimpleString& contains);
-    void assertPrintContainsNot(const SimpleString& contains);
-    void checkTestFailsWithProperTestLocation(const char* text, const char* file, size_t line);
+    void setSetup(void(*setupFunction)())
+    {
+        genTest_->setup_ = setupFunction;
+    }
+
+    void setTeardown(void(*teardownFunction)())
+    {
+        genTest_->teardown_ = teardownFunction;
+    }
+
+    void runTestWithMethod(void(*method)())
+    {
+        setTestFunction(method);
+        runAllTests();
+    }
+
+    void runAllTests()
+    {
+        registry_->runAllTests(*result_);
+    }
+
+    int getFailureCount()
+    {
+        return result_->getFailureCount();
+    }
+
+    int getCheckCount()
+    {
+        return result_->getCheckCount();
+    }
+
+    int getIgnoreCount()
+    {
+        return result_->getIgnoredCount();
+    }
+
+    bool hasTestFailed()
+    {
+        return genTest_->hasFailed();
+    }
+
+    void assertPrintContains(const SimpleString& contains)
+    {
+        assertPrintContains(getOutput(), contains);
+    }
+
+    const SimpleString& getOutput()
+    {
+        return output_->getOutput();
+    }
+
+    static void assertPrintContains(const SimpleString& output, const SimpleString& contains)
+    {
+        STRCMP_CONTAINS(contains.asCharString(), output.asCharString());
+    }
+
+    int getRunCount()
+    {
+    	return result_->getRunCount();
+    }
+
+    void checkTestFailsWithProperTestLocation(const char* text, const char* file, int line);
 
     static void lineExecutedAfterCheck();
-
-private:
-    void clearExecFunction();
-
     static bool lineOfCodeExecutedAfterCheck;
 
     TestRegistry* registry_;
     ExecFunctionTestShell* genTest_;
-    bool ownsExecFunction_;
     StringBufferTestOutput* output_;
     TestResult * result_;
 };

@@ -39,7 +39,7 @@ private:
 
 public:
     CodeMemoryReportFormatter(TestMemoryAllocator* internalAllocator);
-    virtual ~CodeMemoryReportFormatter() _destructor_override;
+    virtual ~CodeMemoryReportFormatter();
 
     virtual void report_testgroup_start(TestResult* result, UtestShell& test) _override;
     virtual void report_testgroup_end(TestResult* /*result*/, UtestShell& /*test*/) _override {} // LCOV_EXCL_LINE
@@ -47,8 +47,8 @@ public:
     virtual void report_test_start(TestResult* result, UtestShell& test) _override;
     virtual void report_test_end(TestResult* result, UtestShell& test) _override;
 
-    virtual void report_alloc_memory(TestResult* result, TestMemoryAllocator* allocator, size_t size, char* memory, const char* file, size_t line) _override;
-    virtual void report_free_memory(TestResult* result, TestMemoryAllocator* allocator, char* memory, const char* file, size_t line) _override;
+    virtual void report_alloc_memory(TestResult* result, TestMemoryAllocator* allocator, size_t size, char* memory, const char* file, int line) _override;
+    virtual void report_free_memory(TestResult* result, TestMemoryAllocator* allocator, char* memory, const char* file, int line) _override;
 
 private:
 
@@ -58,10 +58,10 @@ private:
     void clearReporting();
 
     bool isNewAllocator(TestMemoryAllocator* allocator);
-    SimpleString createVariableNameFromFileLineInfo(const char *file, size_t line);
+    SimpleString createVariableNameFromFileLineInfo(const char *file, int line);
 
     SimpleString getAllocationString(TestMemoryAllocator* allocator, const SimpleString& variableName, size_t size);
-    SimpleString getDeallocationString(TestMemoryAllocator* allocator, const SimpleString& variableName, const char* file, size_t line);
+    SimpleString getDeallocationString(TestMemoryAllocator* allocator, const SimpleString& variableName, const char* file, int line);
 };
 
 #endif

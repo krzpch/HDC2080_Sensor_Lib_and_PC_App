@@ -54,7 +54,7 @@ class MockFailure : public TestFailure
 {
 public:
     MockFailure(UtestShell* test);
-    virtual ~MockFailure() _destructor_override {}
+    virtual ~MockFailure(){}
 protected:
     void addExpectationsAndCallHistory(const MockExpectedCallsList& expectations);
     void addExpectationsAndCallHistoryRelatedTo(const SimpleString& function, const MockExpectedCallsList& expectations);
@@ -93,8 +93,7 @@ public:
 class MockExpectedParameterDidntHappenFailure : public MockFailure
 {
 public:
-    MockExpectedParameterDidntHappenFailure(UtestShell* test, const SimpleString& functionName, const MockExpectedCallsList& allExpectations, 
-                                            const MockExpectedCallsList& matchingExpectations);
+    MockExpectedParameterDidntHappenFailure(UtestShell* test, const SimpleString& functionName, const MockExpectedCallsList& expectations);
 };
 
 class MockNoWayToCompareCustomTypeFailure : public MockFailure

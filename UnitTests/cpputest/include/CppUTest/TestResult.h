@@ -59,58 +59,52 @@ public:
     virtual void countIgnored();
     virtual void addFailure(const TestFailure& failure);
     virtual void print(const char* text);
-    virtual void printVeryVerbose(const char* text);
 
-    size_t getTestCount() const
+    int getTestCount() const
     {
         return testCount_;
     }
-    size_t getRunCount() const
+    int getRunCount() const
     {
         return runCount_;
     }
-    size_t getCheckCount() const
+    int getCheckCount() const
     {
         return checkCount_;
     }
-    size_t getFilteredOutCount() const
+    int getFilteredOutCount() const
     {
         return filteredOutCount_;
     }
-    size_t getIgnoredCount() const
+    int getIgnoredCount() const
     {
         return ignoredCount_;
     }
-    size_t getFailureCount() const
+    int getFailureCount() const
     {
         return failureCount_;
     }
 
-    bool isFailure() const
-    {
-        return (getFailureCount() != 0) || (getRunCount() + getIgnoredCount() == 0);
-    }
+    long getTotalExecutionTime() const;
+    void setTotalExecutionTime(long exTime);
 
-    size_t getTotalExecutionTime() const;
-    void setTotalExecutionTime(size_t exTime);
-
-    size_t getCurrentTestTotalExecutionTime() const;
-    size_t getCurrentGroupTotalExecutionTime() const;
+    long getCurrentTestTotalExecutionTime() const;
+    long getCurrentGroupTotalExecutionTime() const;
 private:
 
     TestOutput& output_;
-    size_t testCount_;
-    size_t runCount_;
-    size_t checkCount_;
-    size_t failureCount_;
-    size_t filteredOutCount_;
-    size_t ignoredCount_;
-    size_t totalExecutionTime_;
-    size_t timeStarted_;
-    size_t currentTestTimeStarted_;
-    size_t currentTestTotalExecutionTime_;
-    size_t currentGroupTimeStarted_;
-    size_t currentGroupTotalExecutionTime_;
+    int testCount_;
+    int runCount_;
+    int checkCount_;
+    int failureCount_;
+    int filteredOutCount_;
+    int ignoredCount_;
+    long totalExecutionTime_;
+    long timeStarted_;
+    long currentTestTimeStarted_;
+    long currentTestTotalExecutionTime_;
+    long currentGroupTimeStarted_;
+    long currentGroupTotalExecutionTime_;
 };
 
 #endif
