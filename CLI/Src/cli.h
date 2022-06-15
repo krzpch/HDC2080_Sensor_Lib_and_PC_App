@@ -6,6 +6,7 @@
 
 // #define CLI_PROCESS_CMD_IMMEDIATELY
 #define CLI_ONE_COMMAND_MAX_SIZE    (64U)
+#define CLI_MAX_ARGS                (8U)
 #define CLI_COMMAND_END_CHAR        ('\n')
 
 typedef enum
@@ -16,12 +17,13 @@ typedef enum
 
 typedef enum
 {
-    CLI_IDLE,
-    CLI_CMD_PENDING
+    CLI_CMD_PROCESSED,
+    CLI_CMD_NOT_PENDING,
+    CLI_CMD_NOT_FOUND
 } CLI_State_t;
 
 typedef int (*CLI_Func_Cmd_Handler_t)(int argc, char **argv);
-typedef int (*CLI_Func_Print_Char_t)(const char *c);
+typedef void (*CLI_Func_Print_t)(char *c);
 
 typedef struct
 {
@@ -40,7 +42,7 @@ typedef struct
 typedef struct
 {
     CLI_Queue_t queue;
-    CLI_Func_Print_Char_t func_print_char;
+    CLI_Func_Print_t func_print;
 
     uint8_t cmd_pending_nb;
     CLI_Cmd_t *commands;
@@ -48,8 +50,8 @@ typedef struct
 } CLI_t;
 
 void CLI_Init(CLI_t *cli);
-void CLI_Print(CLI_t *cli, const char *msg);
-void CLI_Process_Comand(CLI_t *cli);
+void CLI_Print(CLI_t *cli, char *msg);
+CLI_State_t CLI_Process_Comand(CLI_t *cli);
 CLI_Status_t CLI_Receive_Char(CLI_t *cli, char c);
 
 #endif

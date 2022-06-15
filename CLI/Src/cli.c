@@ -2,8 +2,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define CLI_MAX_ARGS (8U)
-
 #define CLI_IS_QUEUE_EMPTY(cli)         ((cli)->head == (cli)->tail)
 #define CLI_IS_QUEUE_FULL(cli)          (((cli)->head + 1) % (cli)->size == (cli)->tail)
 
@@ -17,6 +15,7 @@ static void CLI_Queue_Init(CLI_Queue_t *queue)
     queue->head = 0;
     queue->tail = 0;
 }
+
 static bool CLI_Queue_Push(CLI_Queue_t *queue, char c)
 {
     if (CLI_IS_QUEUE_FULL(queue))
@@ -25,6 +24,7 @@ static bool CLI_Queue_Push(CLI_Queue_t *queue, char c)
     }
     queue->buffer[queue->head] = c;
     queue->head = (queue->head + 1) % queue->size;
+
     return true;
 }
 
@@ -36,6 +36,7 @@ static bool CLI_Queue_Pop(CLI_Queue_t *queue, char *c)
     }
     *c = queue->buffer[queue->tail];
     queue->tail = (queue->tail + 1) % queue->size;
+
     return true;
 }
 
@@ -55,11 +56,11 @@ static CLI_Func_Cmd_Handler_t CLI_Find_Command(CLI_t *cli, const char *cmd)
     return (command_func);
 }
 
-void CLI_Print(CLI_t *cli, const char *msg)
+void CLI_Print(CLI_t *cli, char *msg)
 {
-    for (const char *c = msg; *c != '\0'; c++)
+    for (char *c = msg; *c != '\0'; c++)
     {
-        cli->func_print_char(c);
+        cli->func_print(c);
     }
 }
 
@@ -69,23 +70,28 @@ void CLI_Init(CLI_t *cli)
     cli->cmd_pending_nb = 0;
 }
 
-void CLI_Process_Comand(CLI_t *cli)
+CLI_State_t CLI_Process_Comand(CLI_t *cli)
 {
     uint8_t argc = 0;
     uint16_t cmd_len_cnt = 0;
     char c = '\0';
     char *argv[CLI_MAX_ARGS] = {0};
     char actual_cmd[CLI_ONE_COMMAND_MAX_SIZE] = {0};
+    CLI_State_t state = CLI_CMD_NOT_PENDING;
 
     if (0 < cli->cmd_pending_nb) /* Check if cmd is pending */
     {
+        state = CLI_CMD_PROCESSED;
         do
         {
             /* Read a command from queue */
             CLI_Queue_Pop((CLI_Queue_t *)&cli->queue, &c);
             actual_cmd[cmd_len_cnt++] = c;
-        } while ((c != '\0') && !CLI_IS_QUEUE_EMPTY(&cli->queue));
+        } while ((c != '\0') &&
+                 (!CLI_IS_QUEUE_EMPTY(&cli->queue)) &&
+                 (cmd_len_cnt < CLI_ONE_COMMAND_MAX_SIZE - 1));
 
+        actual_cmd[CLI_ONE_COMMAND_MAX_SIZE] = '\0';
         argv[argc] = strtok(actual_cmd, " ");
 
         while ((argv[argc] != NULL) &&
@@ -102,16 +108,15 @@ void CLI_Process_Comand(CLI_t *cli)
         }
         else
         {
-            const char *cmd_not_found = "Command Not Found\n\r";
+            char *cmd_not_found = "Command Not Found\n\r";
             CLI_Print(cli, cmd_not_found);
-            CLI_Print(cli, argv[0]);
-            CLI_Print(cli, "\n\r");
+            state = CLI_CMD_NOT_FOUND;
         }
 
         cli->cmd_pending_nb -= 1;
     }
 
-    // TODO: return
+    return state;
 }
 
 CLI_Status_t CLI_Receive_Char(CLI_t *cli, char c)
@@ -137,6 +142,16 @@ CLI_Status_t CLI_Receive_Char(CLI_t *cli, char c)
     {
         /* push char into queue */
         push_status = CLI_Queue_Push((CLI_Queue_t *)&cli->queue, c);
+
+        if(false == push_status)
+        {
+            if (0 == cli->cmd_pending_nb)
+            {
+                /* no command pending and cli buffer is full - reset CLI */
+                CLI_Init(cli);
+                push_status = CLI_Queue_Push((CLI_Queue_t *)&cli->queue, c);
+            }
+        }
     }
 
     return (push_status ? CLI_OK : CLI_ERROR);
