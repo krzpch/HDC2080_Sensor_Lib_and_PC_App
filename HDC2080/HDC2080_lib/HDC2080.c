@@ -925,31 +925,31 @@ static uint8_t _HDC2080_Temperature_Offset_to_reg (HDC2080_Temperature_Offset_t 
 	{
 		reg = TEMP_OFFSET_ADJUST_0;
 	}
-	else if (temperature_offset->of_0_32 != 0)
+	if (temperature_offset->of_0_32 != 0)
 	{
 		reg |= TEMP_OFFSET_ADJUST_1;
 	}
-	else if (temperature_offset->of_0_64 != 0)
+	if (temperature_offset->of_0_64 != 0)
 	{
 		reg |= TEMP_OFFSET_ADJUST_2;
 	}
-	else if (temperature_offset->of_1_28 != 0)
+	if (temperature_offset->of_1_28 != 0)
 	{
 		reg |= TEMP_OFFSET_ADJUST_3;
 	}
-	else if (temperature_offset->of_2_58 != 0)
+	if (temperature_offset->of_2_58 != 0)
 	{
 		reg |= TEMP_OFFSET_ADJUST_4;
 	}
-	else if (temperature_offset->of_5_16 != 0)
+	if (temperature_offset->of_5_16 != 0)
 	{
 		reg |= TEMP_OFFSET_ADJUST_5;
 	}
-	else if (temperature_offset->of_10_32 != 0)
+	if (temperature_offset->of_10_32 != 0)
 	{
 		reg |= TEMP_OFFSET_ADJUST_6;
 	}
-	else if (temperature_offset->of_neg_20_32 != 0)
+	if (temperature_offset->of_neg_20_32 != 0)
 	{
 		reg |= TEMP_OFFSET_ADJUST_7;
 	}
@@ -965,31 +965,31 @@ static uint8_t _HDC2080_Humidity_Offset_to_reg (HDC2080_Humidity_Offset_t *humid
 	{
 		reg = HUM_OFFSET_ADJUST_0;
 	}
-	else if (humidity_offset->of_0_4 != 0)
+	if (humidity_offset->of_0_4 != 0)
 	{
 		reg |= HUM_OFFSET_ADJUST_1;
 	}
-	else if (humidity_offset->of_0_8 != 0)
+	if (humidity_offset->of_0_8 != 0)
 	{
 		reg |= HUM_OFFSET_ADJUST_2;
 	}
-	else if (humidity_offset->of_1_6 != 0)
+	if (humidity_offset->of_1_6 != 0)
 	{
 		reg |= HUM_OFFSET_ADJUST_3;
 	}
-	else if (humidity_offset->of_3_1 != 0)
+	if (humidity_offset->of_3_1 != 0)
 	{
 		reg |= HUM_OFFSET_ADJUST_4;
 	}
-	else if (humidity_offset->of_6_3 != 0)
+	if (humidity_offset->of_6_3 != 0)
 	{
 		reg |= HUM_OFFSET_ADJUST_5;
 	}
-	else if (humidity_offset->of_12_5 != 0)
+	if (humidity_offset->of_12_5 != 0)
 	{
 		reg |= HUM_OFFSET_ADJUST_6;
 	}
-	else if (humidity_offset->of_neg_25_0 != 0)
+	if (humidity_offset->of_neg_25_0 != 0)
 	{
 		reg |= HUM_OFFSET_ADJUST_7;
 	}
