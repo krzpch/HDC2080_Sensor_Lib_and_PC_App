@@ -1,0 +1,162 @@
+        -:    0:Source:../../CLI/Src/cli.c
+        -:    0:Graph:test-obj/../..//CLI/Src/cli.gcno
+        -:    0:Data:test-obj/../..//CLI/Src/cli.gcda
+        -:    0:Runs:2
+        -:    1:#include "cli.h"
+        -:    2:#include <string.h>
+        -:    3:#include <stdbool.h>
+        -:    4:
+        -:    5:#define CLI_IS_QUEUE_EMPTY(cli)         ((cli)->head == (cli)->tail)
+        -:    6:#define CLI_IS_QUEUE_FULL(cli)          (((cli)->head + 1) % (cli)->size == (cli)->tail)
+        -:    7:
+        -:    8:static CLI_Func_Cmd_Handler_t CLI_Find_Command(CLI_t *cli, const char *cmd);
+        -:    9:static void CLI_Queue_Init(CLI_Queue_t *queue);
+        -:   10:static bool CLI_Queue_Push(CLI_Queue_t *queue, char c);
+        -:   11:static bool CLI_Queue_Pop(CLI_Queue_t *queue, char *c);
+        -:   12:
+       30:   13:static void CLI_Queue_Init(CLI_Queue_t *queue)
+        -:   14:{
+       30:   15:    queue->head = 0;
+       30:   16:    queue->tail = 0;
+       30:   17:}
+        -:   18:
+     3188:   19:static bool CLI_Queue_Push(CLI_Queue_t *queue, char c)
+        -:   20:{
+     3188:   21:    if (CLI_IS_QUEUE_FULL(queue))
+        -:   22:    {
+        2:   23:        return false;
+        -:   24:    }
+     3186:   25:    queue->buffer[queue->head] = c;
+     3186:   26:    queue->head = (queue->head + 1) % queue->size;
+        -:   27:
+     3186:   28:    return true;
+        -:   29:}
+        -:   30:
+     2108:   31:static bool CLI_Queue_Pop(CLI_Queue_t *queue, char *c)
+        -:   32:{
+     2108:   33:    if (CLI_IS_QUEUE_EMPTY(queue))
+        -:   34:    {
+    #####:   35:        return false;
+        -:   36:    }
+     2108:   37:    *c = queue->buffer[queue->tail];
+     2108:   38:    queue->tail = (queue->tail + 1) % queue->size;
+        -:   39:
+     2108:   40:    return true;
+        -:   41:}
+        -:   42:
+      108:   43:static CLI_Func_Cmd_Handler_t CLI_Find_Command(CLI_t *cli, const char *cmd)
+        -:   44:{
+      108:   45:    CLI_Func_Cmd_Handler_t command_func = NULL;
+        -:   46:
+      272:   47:    for (size_t i = 0; i < cli->commands_nb; i++)
+        -:   48:    {
+      268:   49:        if (0 == strcmp(cli->commands[i].command, cmd))
+        -:   50:        {
+      104:   51:            command_func = cli->commands[i].cmd_handler;
+      104:   52:            break;
+        -:   53:        }
+        -:   54:    }
+        -:   55:
+      108:   56:    return (command_func);
+        -:   57:}
+        -:   58:
+      144:   59:void CLI_Print(CLI_t *cli, char *msg)
+        -:   60:{
+     2066:   61:    for (char *c = msg; *c != '\0'; c++)
+        -:   62:    {
+     1922:   63:        cli->func_print(c);
+        -:   64:    }
+      144:   65:}
+        -:   66:
+       30:   67:void CLI_Init(CLI_t *cli)
+        -:   68:{
+       30:   69:    CLI_Queue_Init((CLI_Queue_t *)&cli->queue);
+       30:   70:    cli->cmd_pending_nb = 0;
+       30:   71:}
+        -:   72:
+      206:   73:CLI_State_t CLI_Process_Comand(CLI_t *cli)
+        -:   74:{
+      206:   75:    uint8_t argc = 0;
+      206:   76:    uint16_t cmd_len_cnt = 0;
+      206:   77:    char c = '\0';
+      206:   78:    char *argv[CLI_MAX_ARGS] = {0};
+      206:   79:    char actual_cmd[CLI_ONE_COMMAND_MAX_SIZE] = {0};
+      206:   80:    CLI_State_t state = CLI_CMD_NOT_PENDING;
+        -:   81:
+      206:   82:    if (0 < cli->cmd_pending_nb) /* Check if cmd is pending */
+        -:   83:    {
+      108:   84:        state = CLI_CMD_PROCESSED;
+        -:   85:        do
+        -:   86:        {
+        -:   87:            /* Read a command from queue */
+     2108:   88:            CLI_Queue_Pop((CLI_Queue_t *)&cli->queue, &c);
+     2108:   89:            actual_cmd[cmd_len_cnt++] = c;
+     4110:   90:        } while ((c != '\0') &&
+     2002:   91:                 (!CLI_IS_QUEUE_EMPTY(&cli->queue)) &&
+     2108:   92:                 (cmd_len_cnt < CLI_ONE_COMMAND_MAX_SIZE - 1));
+        -:   93:
+      108:   94:        actual_cmd[CLI_ONE_COMMAND_MAX_SIZE] = '\0';
+      108:   95:        argv[argc] = strtok(actual_cmd, " ");
+        -:   96:
+      270:   97:        while ((argv[argc] != NULL) &&
+        -:   98:               (argc < CLI_MAX_ARGS))
+        -:   99:        {
+        -:  100:            /* Parse arguments */
+      162:  101:            argv[++argc] = strtok(NULL, " ");
+        -:  102:        }
+        -:  103:
+      108:  104:        CLI_Func_Cmd_Handler_t command_func = CLI_Find_Command(cli, argv[0]);
+      108:  105:        if (command_func != NULL)
+        -:  106:        {
+      104:  107:            command_func(argc, argv);
+        -:  108:        }
+        -:  109:        else
+        -:  110:        {
+        4:  111:            char *cmd_not_found = "Command Not Found\n\r";
+        4:  112:            CLI_Print(cli, cmd_not_found);
+        4:  113:            state = CLI_CMD_NOT_FOUND;
+        -:  114:        }
+        -:  115:
+      108:  116:        cli->cmd_pending_nb -= 1;
+        -:  117:    }
+        -:  118:
+      206:  119:    return state;
+        -:  120:}
+        -:  121:
+     3186:  122:CLI_Status_t CLI_Receive_Char(CLI_t *cli, char c)
+        -:  123:{
+     3186:  124:    bool push_status = false;
+        -:  125:
+     3186:  126:    if (c == CLI_COMMAND_END_CHAR)
+        -:  127:    {
+      108:  128:        if (true == CLI_Queue_Push((CLI_Queue_t *)&cli->queue, '\0'))
+        -:  129:        {
+        -:  130:            /* end of command, increment cmd pending number */
+      108:  131:            cli->cmd_pending_nb += 1;
+        -:  132:        }
+        -:  133:        else
+        -:  134:        {
+        -:  135:            /* push_status already set to false */
+        -:  136:        }
+        -:  137:#ifdef CLI_PROCESS_CMD_IMMEDIATELY
+        -:  138:        CLI_Process_Comand(cli);
+        -:  139:#endif
+        -:  140:    }
+        -:  141:    else
+        -:  142:    {
+        -:  143:        /* push char into queue */
+     3078:  144:        push_status = CLI_Queue_Push((CLI_Queue_t *)&cli->queue, c);
+        -:  145:
+     3078:  146:        if(false == push_status)
+        -:  147:        {
+        2:  148:            if (0 == cli->cmd_pending_nb)
+        -:  149:            {
+        -:  150:                /* no command pending and cli buffer is full - reset CLI */
+        2:  151:                CLI_Init(cli);
+        2:  152:                push_status = CLI_Queue_Push((CLI_Queue_t *)&cli->queue, c);
+        -:  153:            }
+        -:  154:        }
+        -:  155:    }
+        -:  156:
+     3186:  157:    return (push_status ? CLI_OK : CLI_ERROR);
+        -:  158:}
